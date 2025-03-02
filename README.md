@@ -15,5 +15,8 @@
 # NelderMeadSolver:
   Поля класса: 
   - std::map(std::string, std::list(Log)) solution_logs // содержит ход решения для каждой оптимизированной функции
-  - std::map(double, std::vector(Point)) landscape // содержит соответствие Q(X) и X
+  - std::map(double, std::vector(Point)) landscape // содержит соответствие Q(X) и X в последней оптимизируемой функции
+
+  Методы:
+  - Optimize(std::string function) // оптимизирует функцию заданную строкой (из Frontenda)
   
