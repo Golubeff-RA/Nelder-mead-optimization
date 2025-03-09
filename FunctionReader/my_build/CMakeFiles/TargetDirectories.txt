@@ -1,0 +1,4 @@
+/home/vsamohin/Nelder-mead-optimization/FunctionReader/my_build/CMakeFiles/rebuild_cache.dir
+/home/vsamohin/Nelder-mead-optimization/FunctionReader/my_build/CMakeFiles/edit_cache.dir
+/home/vsamohin/Nelder-mead-optimization/FunctionReader/my_build/CMakeFiles/test.dir
+/home/vsamohin/Nelder-mead-optimization/FunctionReader/my_build/CMakeFiles/my_test.dir

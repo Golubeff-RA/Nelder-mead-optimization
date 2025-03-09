@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/my_test.dir/tests/main.cpp.o  -o my_test  -lgtest -lgmock -lpthread 
