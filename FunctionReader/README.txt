@@ -1,3 +1,8 @@
+ ///
+ класс Function высчитывает значение функции с неизвестными xi
+ обрабатывает операции: '+', '-', '*', '/', '^'
+ нормальных тестов пока нет
+ 
  //scr/main
  g++ -fpic -shared -o libfun.so src/Function.cpp -Iinclude
  g++ -o main -Iinclude src/StringDecode.cpp -lfun -L. -Wl,-rpath="./"
