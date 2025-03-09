@@ -8,12 +8,20 @@ class Function {
 private:
 	std::string expression;
 	std::vector<double> vecPoint;
-	void ChangeByPos(size_t ind);
-	void DecodeIndex(size_t pos, std::string& ind);
-	std::string ConvertToString(const double& x, const int precision);
+	std::vector<std::string> vecOperand;
 public:
 	Function(std::string expression, std::vector<double> vecPoint);
-	void Decode();
-	void Print();
 	double Calculate();
 };
+
+///////////////////////////////////////////////////////////////////////////////////
+
+Function::Function(std::string expression, std::vector<double> vecPoint) :
+	expression(expression),
+	vecPoint(vecPoint) {
+		vecOperand = ExpressionParser(expression).GetPraseExpression();
+};
+
+double Function::Calculate() {
+	return PostStringCalculater(vecOperand, vecPoint).Calculate();
+}

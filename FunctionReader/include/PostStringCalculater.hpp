@@ -5,35 +5,42 @@
 
 class PostStringCalculater{
     private:
-    std::vector<std::string> _expression;
+    std::vector<std::string> vecExs;
+    std::vector<double> vecPoint;
     std::stack<double> _stack;
     bool isOperand(std::string operand) { return (operand == "+" || operand == "-" || operand == "*" || operand == "/"); }
-    double Calc(std::string operand, double number1, double number2)
-    {
-        if (operand == "+")
-            return number1 + number2;
-        if (operand == "-")
-            return number1 - number2;
-        if (operand == "*")
-            return number1 * number2;
-
-        if (number2 == 0)
-        {
-            throw std::runtime_error("Math error: Attempted to divide by Zero\n");
+    
+    double decodeNumber(std::string number){
+        if(number.length() == 0){
+            throw std::runtime_error("wrong in postfix _stack. Number hav not length");
         }
-        else
-        {
-            return number1 / number2;
+
+        if(number[0] != 'x'){
+            return std::stod(number);
+        }
+
+        try {
+            int index= std::stoi(number.substr(1)) - 1;
+            if(index <0 || index >= vecPoint.size()) throw std::runtime_error("Invalid index " + number);
+            else return vecPoint[index];
+        }
+        catch (const std::invalid_argument& ia) {
+           throw std::runtime_error( "Invalid argument "  + number);
+        }
+        catch (const std::out_of_range& oor) {
+            throw std::runtime_error( "Out of Range error: "  + number);
         }
     }
 
 public:
-    PostStringCalculater(std::string expression) {
-        _expression = PostStringTransfer(expression).GetPostfixString();
+
+    PostStringCalculater(std::vector<std::string> vecExpression, std::vector<double> vecPoint) : vecPoint(vecPoint){
+        vecExs = PostStringTransfer(vecExpression).GetPostfixString();
     }
+
     double Calculate()
     {
-        for (auto operand : _expression)
+        for (auto operand : vecExs)
         {
             if (isOperand(operand))
             {
@@ -52,7 +59,7 @@ public:
             }
             else
             {
-                _stack.push(std::stod(operand));
+                _stack.push(decodeNumber(operand));
             }
         }
 

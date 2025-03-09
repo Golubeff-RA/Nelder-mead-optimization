@@ -3,6 +3,8 @@
 #include<vector>
 #include<stack>
 #include<string>
+#include"Algebra.h"
+
 
 class ExpressionParser {
 private:
@@ -25,7 +27,7 @@ private:
         std::string str = "";
         for (auto symbol : _expression)
         {
-            if (symbol == ' ' || symbol == '(' || symbol == ')')
+            if (symbol == ' ' || symbol == '(' || symbol == ')' || isOperand(symbol))
             {
                 str = AddInList(str, symbol);
             }
@@ -38,7 +40,7 @@ public:
     ExpressionParser(std::string expression) : _expression(expression) {};
     
 
-    std::vector<std::string> GetPraseString()
+    std::vector<std::string> GetPraseExpression()
     {
         Parse();
         return list_expression;

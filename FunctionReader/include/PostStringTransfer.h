@@ -1,5 +1,7 @@
+#pragma once
 #include"ExpressionParse.h"
 #include<map>
+#include"Algebra.h"
 
 class PostStringTransfer
 {
@@ -7,17 +9,6 @@ private:
     std::vector<std::string> _expression;
     std::vector<std::string> _postExpression;
     std::stack<std::string> _stack;
-    std::map<std::string, int> _map = {
-       { "(", 0 },
-       { ")", 0 },
-       { "+", 1 },
-       { "-", 2 },
-       { "*", 3 },
-       { "/", 3 },
-    };
-
-    bool CheckOperandsMore(std::string operand1, std::string operand2) { return _map[operand1] >= _map[operand2]; }
-    bool isOperand(std::string operand) { return (_map.count(operand) != 0 && operand != "(" && operand != ")"); }
 
     void openScobActions(std::string str)
     {
@@ -64,13 +55,10 @@ private:
             _postExpression.push_back(_stack.top());
             _stack.pop();
         }
-
     }
 
 public:
-    PostStringTransfer(std::string expression) {
-        _expression = ExpressionParser(expression).GetPraseString();
-    }
+    PostStringTransfer(std::vector<std::string> vecExpression) :  _expression(vecExpression){}
 
     std::vector<std::string> GetPostfixString()
     {
