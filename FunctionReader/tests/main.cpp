@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include"Function.h"
+#include "Function.h"
 
 TEST(TestCaseName, TestName1)
 {
@@ -25,7 +25,5 @@ TEST(TestCaseName, TestName3)
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
-//  ::testing::InitGoogleMock(&argc, argv);
-  
   return RUN_ALL_TESTS();
 }
