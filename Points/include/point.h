@@ -3,45 +3,40 @@
 
 class Point {
 public:
-    Point(size_t dimensions) {
-        data_ = std::vector<double>(dimensions, 0.0);
-        pointer_ = new double(5);
-    }
+    Point(size_t dimensions);
+    Point(const std::vector<double>& data);
+    // rule of 5 realisation //
+    Point(const Point& other);
+    Point(Point&& other);
+    Point& operator=(const Point& other);
 
-    Point(const std::vector<double>& data) : data_(data) {
-    }
+    Point& operator=(Point&& other);
+    ~Point();
+    // ... //
 
-    // rule of 5 realisation
-    Point(const Point& other) : data_(other.data_) {
-    }
+    size_t Size() const;
+    double operator[](size_t idx) const;
 
-    Point(Point&& other) : data_(std::move(other.data_)) {
-    }
+    double& operator[](size_t idx);
 
-    Point& operator=(const Point& other) {
-        this->data_ = other.data_;
-        return *this;
-    }
+    Point& operator+=(const Point& other);
 
-    Point& operator=(Point&& other) {
-        this->data_ = std::move(other.data_);
-        return *this;
-    }
+    Point& operator-=(const Point& other);
 
-    size_t Size() const {
-        return data_.size();
-    }
+    Point& operator*=(double coef);
 
-    double operator[](size_t idx) const {
-        return data_[idx];
-    }
+    friend Point operator+(const Point& left, const Point& right);
 
-    double& operator[](size_t idx) {
-        return data_[idx];
-    }
+    friend Point operator-(const Point& left, const Point& right);
+
+    friend Point operator*(const Point& point, double coef);
+
+    friend Point operator*(double coef, const Point& point);
 
 
 private:
     std::vector<double> data_;
-    double* pointer_;
 };
+
+// вычисляет меру симплекса с помощью определителя матрицы
+double Measure(const std::vector<Point>& simplex);
