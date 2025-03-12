@@ -27,8 +27,7 @@ TEST(Constructors, test1) {
     EXPECT_TRUE(CompareData(test3, data3));
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
