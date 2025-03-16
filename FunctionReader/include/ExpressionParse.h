@@ -13,6 +13,7 @@ private:
     std::string AddInList(std::string str, char symbol);
     void Parse();
     bool isNeedSeparate(char symbol);
+    void checkScobCount();
 public:
     ExpressionParser(std::string expression) : _expression(expression) {};
     std::vector<std::string> GetPraseExpression();
@@ -46,6 +47,7 @@ void ExpressionParser::Parse(){
 std::vector<std::string> ExpressionParser::GetPraseExpression()
 {
     Parse();
+    checkScobCount();
     return list_expression;
 }
 
@@ -59,4 +61,21 @@ bool ExpressionParser::isNeedSeparate(char symbol){
         } else flag |= true;
     }
     return flag;
+}
+
+void ExpressionParser::checkScobCount(){
+    int scob_cnt = 0;
+    for(auto e : list_expression){
+        if(e == "(") {
+            scob_cnt++;
+        } else if(e == ")"){
+            scob_cnt--;
+        }
+        if(scob_cnt < 0){
+            throw std::runtime_error("Incorrect count sckob\n");
+        }
+    }
+    if(scob_cnt > 0){
+        throw std::runtime_error("Incorrect count sckob\n");
+    }
 }

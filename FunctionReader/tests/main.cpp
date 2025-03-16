@@ -184,6 +184,70 @@ TEST(DifferentOperations, test2)
     ASSERT_EQ(func.Calculate(), ans);
 }
 
+TEST(ExeptionTest, test1)
+{
+    std::string expression = "1 / x1";
+    std::vector<double> p = {0};
+    Point point(p);
+    Function func(expression, point);
+    try{
+        func.Calculate();
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Math error: Attempted to divide by Zero\n", e.what());
+    }    
+}
+
+TEST(ExeptionTest, test2)
+{
+    std::string expression = " / x1";
+    std::vector<double> p = {0};
+    Point point(p);
+    Function func(expression, point);
+    try{
+        func.Calculate();
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Incorrect expression\n", e.what());
+    }
+}
+
+TEST(ExeptionTest, test3)
+{
+    std::string expression = " ( 1 + 4 ) * (3 + (4)";
+    std::vector<double> p = {0};
+    Point point(p);
+    try{
+        Function func(expression, point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Incorrect count sckob\n", e.what());
+    }
+}
+
+TEST(ExeptionTest, test4)
+{
+    std::string expression = " ) 4 + 6";
+    std::vector<double> p = {0};
+    Point point(p);
+    try{
+        Function func(expression, point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Incorrect count sckob\n", e.what());
+    }
+}
+
+TEST(ExeptionTest, test5)
+{
+    std::string expression = "10 / (x1 + 6 - 6 * 4)";
+    std::vector<double> p = {18};
+    Point point(p);
+    Function func(expression, point);
+    try{
+        func.Calculate();
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Math error: Attempted to divide by Zero\n", e.what());
+    }    
+}
+
+
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

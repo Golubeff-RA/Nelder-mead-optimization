@@ -50,18 +50,15 @@ double PostStringCalculater::Calculate(){
     {
         if (isOperation(operand))
         {
+            if(_stack.size() < 2){
+                throw std::runtime_error("Incorrect expression\n");
+            }
             auto number2 = _stack.top();
             _stack.pop();
             auto number1 = _stack.top();
             _stack.pop();
 
-            try {
-                _stack.push(Calc(operand, number1, number2));
-            }
-            catch (std::runtime_error& e) {
-                std::cout << "Exception occurred" << std::endl<< e.what();
-                exit(0);
-            }
+            _stack.push(Calc(operand, number1, number2));
         }
         else
         {
