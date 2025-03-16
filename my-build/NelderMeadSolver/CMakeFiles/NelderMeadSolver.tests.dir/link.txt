@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -Werror -Wsign-compare   CMakeFiles/NelderMeadSolver.tests.dir/tests/solverTesting.cpp.o CMakeFiles/NelderMeadSolver.tests.dir/__/Points/src/constructors.cpp.o CMakeFiles/NelderMeadSolver.tests.dir/__/Points/src/operators.cpp.o  -o NelderMeadSolver.tests  -lgtest -lgmock -lpthread 

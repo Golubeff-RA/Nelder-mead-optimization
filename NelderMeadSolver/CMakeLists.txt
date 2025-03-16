@@ -7,7 +7,11 @@ add_executable(playground
     ${CMAKE_SOURCE_DIR}/Points/src/constructors.cpp
     ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
 )
-add_executable(${PROJECT_NAME}.tests tests/solverTesting.cpp)
+add_executable(${PROJECT_NAME}.tests 
+    tests/solverTesting.cpp
+    ${CMAKE_SOURCE_DIR}/Points/src/constructors.cpp
+    ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
+)
 include_directories(
     ${CMAKE_SOURCE_DIR}/FunctionReader/include
     ${CMAKE_SOURCE_DIR}/NelderMeadSolver/include

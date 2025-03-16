@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -Werror -Wsign-compare   CMakeFiles/Points.dir/src/main.cpp.o CMakeFiles/Points.dir/src/constructors.cpp.o CMakeFiles/Points.dir/src/operators.cpp.o  -o Points 

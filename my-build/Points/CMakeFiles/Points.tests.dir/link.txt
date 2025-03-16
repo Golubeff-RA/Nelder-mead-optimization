@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -Werror -Wsign-compare   CMakeFiles/Points.tests.dir/tests/pointsTesting.cpp.o CMakeFiles/Points.tests.dir/src/constructors.cpp.o CMakeFiles/Points.tests.dir/src/operators.cpp.o  -o Points.tests  -lgtest -lgmock -lpthread 

@@ -53,6 +53,6 @@ Point operator*(const Point& point, double coef) {
 }
 
 Point operator*(double coef, const Point& point) {
-    return point * coef;
+    return Point(point) * coef;
 }
 
