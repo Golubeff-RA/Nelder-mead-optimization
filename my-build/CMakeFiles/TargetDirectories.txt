@@ -1,0 +1,13 @@
+/home/vsamohin/Nelder-mead-optimization/my-build/CMakeFiles/rebuild_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/CMakeFiles/edit_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/FunctionReader/CMakeFiles/rebuild_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/FunctionReader/CMakeFiles/edit_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/FunctionReader/CMakeFiles/functionParserTests.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/NelderMeadSolver/CMakeFiles/rebuild_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/NelderMeadSolver/CMakeFiles/edit_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/NelderMeadSolver/CMakeFiles/NelderMeadSolver.tests.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/NelderMeadSolver/CMakeFiles/playground.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/Points/CMakeFiles/rebuild_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/Points/CMakeFiles/edit_cache.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/Points/CMakeFiles/Points.dir
+/home/vsamohin/Nelder-mead-optimization/my-build/Points/CMakeFiles/Points.tests.dir
