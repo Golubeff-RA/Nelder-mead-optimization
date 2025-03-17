@@ -20,4 +20,5 @@ message("Release build compiler flags: " ${CMAKE_CXX_FLAGS_REL})
 
 add_subdirectory(FunctionReader)
 add_subdirectory(NelderMeadSolver)
+add_subdirectory(Frontend)
 add_subdirectory(Points)

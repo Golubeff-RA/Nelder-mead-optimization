@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include"PostStringCalculater.hpp"
+#include "point.h"
 
 
 class Function {
@@ -10,8 +11,8 @@ private:
 	std::vector<double> vecPoint;
 	std::vector<std::string> vecOperand;
 public:
-	Function(std::string expression, std::vector<double> vecPoint);
-	double Calculate();
+	Function(std::string expression);
+	double Calculate(const Point& point);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////
