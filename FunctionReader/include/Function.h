@@ -7,8 +7,8 @@
 
 class Function {
 private:
-	std::string expression;
-	std::vector<double> vecPoint;
+	std::string _expression;
+	Point _point;
 	std::vector<std::string> vecOperand;
 public:
 	Function(std::string expression);
@@ -17,12 +17,12 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-Function::Function(std::string expression, std::vector<double> vecPoint) :
-	expression(expression),
-	vecPoint(vecPoint) {
-		vecOperand = ExpressionParser(expression).GetPraseExpression();
+Function::Function(std::string expression, Point point) :
+	_expression(expression),
+	_point(point) {
+		vecOperand = PostStringTransfer(_expression).GetPostfixString();
 };
 
 double Function::Calculate() {
-	return PostStringCalculater(vecOperand, vecPoint).Calculate();
+	return PostStringCalculater(vecOperand, _point).Calculate();
 }

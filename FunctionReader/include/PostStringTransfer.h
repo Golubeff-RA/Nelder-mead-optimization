@@ -18,12 +18,16 @@ private:
 
 public:
     PostStringTransfer(std::vector<std::string> vecExpression) :  _expression(vecExpression){}
+    PostStringTransfer(std::string expression);
     std::vector<std::string> GetPostfixString();
 };
 
 
 
 /////////////////////////////////////////////////////////////////////////////////
+PostStringTransfer::PostStringTransfer(std::string expression){
+    _expression = ExpressionParser(expression).GetPraseExpression();
+}
 void PostStringTransfer::openScobActions(std::string str){
     _stack.push(str);
 }

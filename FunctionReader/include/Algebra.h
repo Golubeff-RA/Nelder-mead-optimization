@@ -2,6 +2,7 @@
 #include<unordered_map>
 #include<string>
 #include<math.h>
+#include"point.h"
 
 #define PLUS 0
 #define MINUS 1
