@@ -41,7 +41,7 @@ include_directories(${IMGUI_DIR}, )
 add_executable(FrontendImGui main.cpp)
 
 # Свяжите вашу программу с ImGui, GLFW и OpenGL
-target_link_libraries(ImGuiExample imgui glfw ${OPENGL_LIBRARIES} points)
+target_link_libraries(FrontendImGui imgui glfw ${OPENGL_LIBRARIES} points)
 
 
 # Укажите флаги компиляции для ImGui (если необходимо)

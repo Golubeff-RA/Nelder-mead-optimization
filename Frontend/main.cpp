@@ -139,8 +139,6 @@ int main(int, char**) {
                      clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         // glUseProgram(last_program);
 
         glfwMakeContextCurrent(window);
