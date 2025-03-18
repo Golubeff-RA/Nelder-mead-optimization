@@ -16,9 +16,12 @@ endif()
 # Путь к исходникам ImGui. Укажите реальный путь!
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
 set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
+set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
+set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
+set(FUNCTION_DIR ${CMAKE_SOURCE_DIR}/FunctionReader)
 
 # Добавьте исходники ImGui
-include_directories(${IMGUI_DIR} ${IMGUI_DIR_BACK})
+include_directories(${IMGUI_DIR} ${IMGUI_DIR_BACK} ${POINT_DIR}/include ${SOLVER_DIR}/include ${FUNCTION_DIR}/include)
 add_library(imgui STATIC
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_draw.cpp
@@ -26,17 +29,22 @@ add_library(imgui STATIC
     ${IMGUI_DIR}/imgui_widgets.cpp
     ${IMGUI_DIR}/imgui_demo.cpp  # Опционально, для демо-примера
     ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
-    ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+add_library(points STATIC
+    ${POINT_DIR}/src/constructors.cpp
+    ${POINT_DIR}/src/operators.cpp
 )
 
 # Добавьте заголовочные файлы ImGui в пути поиска
-include_directories(${IMGUI_DIR})
+include_directories(${IMGUI_DIR}, )
 
 # Добавьте свой исходный файл
 add_executable(ImGuiExample main.cpp)
 
 # Свяжите вашу программу с ImGui, GLFW и OpenGL
-target_link_libraries(ImGuiExample imgui glfw ${OPENGL_LIBRARIES})
+target_link_libraries(ImGuiExample imgui glfw ${OPENGL_LIBRARIES} points)
 
 # Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC
