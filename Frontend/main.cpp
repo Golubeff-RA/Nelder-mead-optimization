@@ -21,6 +21,7 @@
 #include <vector>
 #include "point.h"
 #include "solver.h"
+#include <iostream>
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of
 // testing and compatibility with old VS compilers. To link with VS2010-era libraries, VS2015+
@@ -40,13 +41,32 @@ static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
+void PrintPoint(const Point& point) {
+    std::cout << '(';
+    for (size_t i = 0; i < point.Size(); ++i) {
+        std::cout << point[i];
+        if (i != point.Size() - 1) {
+            std::cout << "; ";
+        }
+    }
+    std::cout << ')';
+}
+
 // Main code
 int main(int, char**) {
     Point p1 {std::vector<double>{1, 2, 3, 4}};
     Point p2 {std::vector<double>{1, 2, 3, 4}};
     Point p3 = p1 + p2;
 
-    NelderMeadSolver solver;
+    NelderMeadSolver solver{};
+    auto logs = solver.GetLogs("x1 + x2");
+    for (const Log& log : logs) {
+        std::cout<<"Q(X) = " << log.func_val << " measure = " << log.measure << " simplex: ";
+        for (const Point& point : log.points) {
+            PrintPoint(point);
+        }
+        std::cout << std::endl;
+    }
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
