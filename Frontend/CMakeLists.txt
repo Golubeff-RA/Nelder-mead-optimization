@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(ImGuiExample)
+project(FrontendImGui)
 
 set(CMAKE_CXX_STANDARD 17)  # Или более поздняя версия, если требуется
 
@@ -41,10 +41,11 @@ add_library(points STATIC
 include_directories(${IMGUI_DIR}, )
 
 # Добавьте свой исходный файл
-add_executable(ImGuiExample main.cpp)
+add_executable(FrontendImGui main.cpp)
 
 # Свяжите вашу программу с ImGui, GLFW и OpenGL
 target_link_libraries(ImGuiExample imgui glfw ${OPENGL_LIBRARIES} points)
+
 
 # Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC
