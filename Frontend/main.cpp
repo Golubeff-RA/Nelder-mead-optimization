@@ -11,23 +11,48 @@
 #include <vector>
 #include "point.h"
 #include "solver.h"
+#include <iostream>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-
 static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
+void PrintPoint(const Point& point) {
+    ImGui::Text("(");
+    ImGui::SameLine();
+    // std::cout << '(';
+    for (size_t i = 0; i < point.Size(); ++i) {
+        ImGui::Text("%lf", point[i]);
+        ImGui::SameLine();
+        // std::cout << point[i];
+        if (i != point.Size() - 1) {
+            ImGui::Text(";");
+            ImGui::SameLine();
+            // std::cout << "; ";
+        }
+    }
+    ImGui::Text(")");
+    // std::cout << ')';
+}
+
 // Main code
 int main(int, char**) {
+
+    Point p1{std::vector<double>{1, 2, 3, 4}};
+    Point p2{std::vector<double>{1, 2, 3, 4}};
+    Point p3 = p1 + p2;
+
+    NelderMeadSolver solver;
+
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
 
-        // Decide GL+GLSL versions
+    // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100 (WebGL 1.0)
     const char* glsl_version = "#version 100";
@@ -87,6 +112,8 @@ int main(int, char**) {
     char printFunction[128] = "";
     char defaultString[18] = "";
     char inputFunction[128] = "";
+    bool printPoint = false;
+    std::list<Log> logs = std::list<Log>();
     // Main loop
 
     while (!glfwWindowShouldClose(window)) {
@@ -105,17 +132,34 @@ int main(int, char**) {
         ImGui::Text("Q(X)=");
         ImGui::SameLine();
         ImGui::InputText("<- input function", inputFunction, 128);
-        if (ImGui::Button("Read")){
+        if (ImGui::Button("Read")) {
             strcpy(printFunction, inputFunction);
             strcpy(defaultString, "Function readed:");
+            printPoint = true;
+            logs = solver.GetLogs("x1 + x2");
         }
         ImGui::SameLine();
-        if (ImGui::Button("Clear")){
+        if (ImGui::Button("Clear")) {
             strcpy(printFunction, "");
             strcpy(defaultString, "");
+            printPoint = false;
+            logs.clear();
         }
         ImGui::Text("%s %s", defaultString, printFunction);
 
+        if (printPoint){
+            ImGui::Text("Test point:");
+            PrintPoint(p1);
+        }
+
+        if(!logs.empty()){
+            for (Log log : logs){
+                ImGui::Text("log:");
+                for(Point p : log.points)
+                    PrintPoint(p);
+            }
+            
+        }
         ImGui::End();
 
         // Rendering
@@ -127,8 +171,6 @@ int main(int, char**) {
                      clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         // glUseProgram(last_program);
 
         glfwMakeContextCurrent(window);
@@ -149,7 +191,7 @@ int main(int, char**) {
     return 0;
 }
 
-// âñå êîììåíòàðèè, âäðóã íàäî áóäåò
+// ??? ???????????, ????? ???? ?????
 //  Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
 //  (GLFW is a cross-platform general purpose library for handling windows, inputs,
 //  OpenGL/Vulkan/Metal graphics context creation, etc.)
