@@ -35,6 +35,7 @@ int main(int, char**) {
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+    io.Fonts->AddFontFromFileTTF("../../Frontend/imgui/misc/fonts/DroidSans.ttf", 32.0f);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
