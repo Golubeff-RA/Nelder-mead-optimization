@@ -24,22 +24,17 @@ static void glfw_error_callback(int error, const char* description) {
 void PrintPoint(const Point& point) {
     ImGui::Text("(");
     ImGui::SameLine();
-    // std::cout << '(';
     for (size_t i = 0; i < point.Size(); ++i) {
         ImGui::Text("%lf", point[i]);
         ImGui::SameLine();
-        // std::cout << point[i];
         if (i != point.Size() - 1) {
             ImGui::Text(";");
             ImGui::SameLine();
-            // std::cout << "; ";
         }
     }
     ImGui::Text(")");
-    // std::cout << ')';
 }
 
-// Main code
 int main(int, char**) {
 
     Point p1{std::vector<double>{1, 2, 3, 4}};
@@ -81,8 +76,6 @@ int main(int, char**) {
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
-    // Create window with graphics context
-
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Nelder-Mead method", nullptr, nullptr);
     if (window == nullptr)
         return 1;
@@ -98,7 +91,6 @@ int main(int, char**) {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
     io.Fonts->AddFontFromFileTTF("../../Frontend/imgui/misc/fonts/DroidSans.ttf", 32.0f);
 
-    // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
@@ -107,14 +99,13 @@ int main(int, char**) {
     ImGui_ImplGlfw_InstallEmscriptenCallbacks(window, "#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-    // Our state
+
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     char printFunction[128] = "";
     char defaultString[18] = "";
     char inputFunction[128] = "";
     bool printPoint = false;
     std::list<Log> logs = std::list<Log>();
-    // Main loop
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -123,7 +114,6 @@ int main(int, char**) {
             continue;
         }
 
-        // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -147,18 +137,18 @@ int main(int, char**) {
         }
         ImGui::Text("%s %s", defaultString, printFunction);
 
-        if (printPoint){
-            ImGui::Text("Test point:");
-            PrintPoint(p1);
-        }
-
         if(!logs.empty()){
+            ImGui::Begin("Output window");
+            if (printPoint){
+                ImGui::Text("Test point:");
+                PrintPoint(p1);
+            }
             for (Log log : logs){
                 ImGui::Text("log:");
                 for(Point p : log.points)
                     PrintPoint(p);
             }
-            
+            ImGui::End();
         }
         ImGui::End();
 
@@ -180,7 +170,6 @@ int main(int, char**) {
     EMSCRIPTEN_MAINLOOP_END;
 #endif
 
-    // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -191,7 +180,7 @@ int main(int, char**) {
     return 0;
 }
 
-// ??? ???????????, ????? ???? ?????
+// комментарии на всякий случай
 //  Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
 //  (GLFW is a cross-platform general purpose library for handling windows, inputs,
 //  OpenGL/Vulkan/Metal graphics context creation, etc.)
