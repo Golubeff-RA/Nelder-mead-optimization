@@ -247,6 +247,15 @@ TEST(ExeptionTest, test5)
     }    
 }
 
+TEST(MaximTest, test1)
+{
+    std::string expression = "(x1 + x2) * x3 / x4";
+    std::vector<double> p = {1,1,2,10};
+    Point point(p);
+    double ans = 0.4;
+    Function func(expression, point);
+    ASSERT_EQ(func.Calculate(), ans);
+}
 
 int main(int argc, char **argv)
 {

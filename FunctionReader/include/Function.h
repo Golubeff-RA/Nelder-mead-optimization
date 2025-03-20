@@ -1,5 +1,6 @@
 #pragma once
 #include <sstream>
+#include<iostream>
 #include <iomanip>
 #include "PostStringCalculater.hpp"
 #include "PostStringTransfer.h"
@@ -19,7 +20,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////
 
 Function::Function(std::string expression, Point point)
-    : expression(std::move(expression)), _point(point) {
+    : expression(expression), _point(point) {
     vecOperand = PostStringTransfer(expression).GetPostfixString();
 }
 
