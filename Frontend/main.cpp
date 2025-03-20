@@ -46,7 +46,7 @@ int main(int, char**) {
     Point p2 {std::vector<double>{1, 2, 3, 4}};
     Point p3 = p1 + p2;
 
-    NelderMeadSolver solver;
+    //NelderMeadSolver solver;
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;

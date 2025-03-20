@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <utility>
 #include <vector>
 #include <string>
 #include <map>
@@ -6,9 +8,9 @@
 #include "point.h"
 
 struct Log {
-    std::vector<Point> points; // точки симплекса
-    double measure;            // мера симплекса
-    double func_val;           // значение функции
+    std::vector<Point> points;  // точки симплекса
+    double measure;             // мера симплекса
+    double func_val;            // значение функции
 };
 
 class NelderMeadSolver {
@@ -16,7 +18,7 @@ public:
     // тут крафтится заглушка для возможности написания фронтенда
     // не забудь удалить потом!!!
     // в нем лежит лог для функции "x1 + x2"
-    NelderMeadSolver() {
+    NelderMeadSolver(double eps, size_t epoch) : eps_(eps), epoch_(epoch) {
         std::vector<double> p_data1{1, 2};
         std::vector<double> p_data2{2, 3};
         std::vector<double> p_data3{3, 4};
@@ -31,8 +33,37 @@ public:
 
         optimized_functions_["x1 + x2"] = std::list{log1, log2, log3, log4, log5};
     }
-    // вернёт найденный минимум функции
-    double Optimize(const std::string& function);
+    // вернёт найденный минимум функции стартуя с заданной точки
+    double Optimize(const std::string& function, const Point& start_point) {
+        //size_t dim = CountDim(function);
+        //Function func{function};
+
+        return 3.14;
+    }
+
+    // счтает переменных в оптимизируемой функции
+    size_t CountDim(const std::string& function) {
+        size_t idx = 0;
+        size_t max_dim = 0;
+        size_t dim = 0;
+        while (idx < function.size()) {
+            if (function[idx] == 'x') {
+                ++idx;
+                std::string num{};
+                while (function[idx] >= '0' && function[idx] <= '9' && idx < function.size()) {
+                    num.push_back(function[idx]);
+                    ++idx;
+                }
+
+                dim = std::stoi(num);
+                if (max_dim < dim) {
+                    max_dim = dim;
+                }
+            }
+            ++idx;
+        }
+        return max_dim;
+    }
 
     // вернёт логи процесса оптимизации функции
     std::list<Log> GetLogs(const std::string& function) {
@@ -41,4 +72,15 @@ public:
 
 private:
     std::map<std::string, std::list<Log>> optimized_functions_;
+    const double eps_;
+    const size_t epoch_;
+
+    
+
+    // генерирует опорный симплекс
+    std::vector<Point>& GenerateRandomSimplex(size_t dim);
+
+    // оператор сжатия
+
+    // оператор растяжения
 };
