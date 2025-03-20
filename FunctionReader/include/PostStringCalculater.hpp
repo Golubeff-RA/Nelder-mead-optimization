@@ -26,7 +26,14 @@ double PostStringCalculater::decodeNumber(std::string number){
     }
 
     if(number[0] != 'x' && number[std::min(1, (int)number.size() - 1)] != 'x'){
-        return std::stod(number);
+        try {
+            return std::stod(number);
+        }  catch (const std::invalid_argument & e) {
+            throw std::runtime_error(e.what());
+        }
+        catch (const std::out_of_range & e) {
+            throw std::runtime_error(e.what());
+        }
     }
 
     try {
