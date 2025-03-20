@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include "point.h"
 #include "solver.h"
 #include "Function.h"
@@ -107,7 +108,7 @@ int main(int, char**) {
     char defaultString[18] = "";
     char inputFunction[128] = "";
     bool printPoint = false;
-    Point testPoint{std::vector<double>{1, 1, 2, 10}};
+    Point testPoint{std::vector<double>{1, 0, 2, 10}};
     double testAnswer = 0;
     std::list<Log> logs = std::list<Log>();
 
@@ -137,7 +138,9 @@ int main(int, char**) {
             } catch (const std::runtime_error& e) {
                 std::cerr << e.what() << '\n';
                 printPoint = false;
-                strcpy(printFunction, "invalid input");
+                std::ostringstream errorStr;
+                errorStr << "invalid input\nError: " << e.what();
+                strcpy(printFunction, errorStr.str().c_str());
             }
         }
         ImGui::SameLine();
