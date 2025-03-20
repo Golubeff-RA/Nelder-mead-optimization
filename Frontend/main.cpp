@@ -9,8 +9,10 @@
 #include <GLFW/glfw3.h>  // Will drag system OpenGL headers
 
 #include <vector>
+#include <string>
 #include "point.h"
 #include "solver.h"
+#include "Function.h"
 #include <iostream>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -105,6 +107,8 @@ int main(int, char**) {
     char defaultString[18] = "";
     char inputFunction[128] = "";
     bool printPoint = false;
+    Point testPoint{std::vector<double>{1, 1, 2, 10}};
+    double testAnswer = 0;
     std::list<Log> logs = std::list<Log>();
 
     while (!glfwWindowShouldClose(window)) {
@@ -123,10 +127,18 @@ int main(int, char**) {
         ImGui::SameLine();
         ImGui::InputText("<- input function", inputFunction, 128);
         if (ImGui::Button("Read")) {
-            strcpy(printFunction, inputFunction);
-            strcpy(defaultString, "Function readed:");
-            printPoint = true;
-            logs = solver.GetLogs("x1 + x2");
+            try {
+                strcpy(printFunction, inputFunction);
+                strcpy(defaultString, "Function read:");
+                logs = solver.GetLogs("x1 + x2");
+                Function func(inputFunction);
+                testAnswer = func.Calculate(testPoint);
+                printPoint = true;
+            } catch (const std::runtime_error& e) {
+                std::cerr << e.what() << '\n';
+                printPoint = false;
+                strcpy(printFunction, "invalid input");
+            }
         }
         ImGui::SameLine();
         if (ImGui::Button("Clear")) {
@@ -137,17 +149,20 @@ int main(int, char**) {
         }
         ImGui::Text("%s %s", defaultString, printFunction);
 
-        if(!logs.empty()){
+        if (!logs.empty() && printPoint) {
             ImGui::Begin("Output window");
-            if (printPoint){
-                ImGui::Text("Test point:");
-                PrintPoint(p1);
-            }
-            for (Log log : logs){
+            ImGui::Text("Test point:");
+            PrintPoint(p1);
+            ImGui::Text("Test logs:");
+            for (Log log : logs) {
                 ImGui::Text("log:");
-                for(Point p : log.points)
+                for (Point p : log.points)
                     PrintPoint(p);
+                ImGui::Text("Q(X) = %lf", log.func_val);
             }
+            ImGui::Text("Test value:");
+            PrintPoint(testPoint);
+            ImGui::Text("Function value = %lf", testAnswer);
             ImGui::End();
         }
         ImGui::End();
