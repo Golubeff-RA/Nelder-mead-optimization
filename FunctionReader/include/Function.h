@@ -12,6 +12,9 @@ private:
 
 public:
     Function(const std::string& expression) : expression(expression) {
+        if(expression == ""){
+            throw std::runtime_error("empty expression\n");
+        }
         vecOperand = PostStringTransfer(expression).GetPostfixString();
     }
     double Calculate(const Point& point) {
