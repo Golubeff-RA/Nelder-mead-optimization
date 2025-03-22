@@ -1,23 +1,22 @@
 #pragma once
 #include"ExpressionParse.h"
-#include<map>
 #include"Algebra.h"
 
 class PostStringTransfer
 {
 private:
-    std::vector<std::string> _expression;
-    std::vector<std::string> _postExpression;
-    std::stack<std::string> _stack;
+    std::vector<std::string> expression_;
+    std::vector<std::string> postExpression_;
+    std::stack<std::string> stack_;
 
-    void openScobActions(std::string str);
-    void closeScobActions(std::string str);
-    void operandActions(std::string str);
-    void numberActions(std::string str);
+    void OpenScobActions(std::string str);
+    void CloseScobActions(std::string str);
+    void OperandActions(std::string str);
+    void NumberActions(std::string str);
     void FillPostfixstring();
 
 public:
-    PostStringTransfer(std::vector<std::string> vecExpression) :  _expression(vecExpression){}
+    PostStringTransfer(std::vector<std::string> vecExpression) :  expression_(vecExpression){}
     PostStringTransfer(std::string expression);
     std::vector<std::string> GetPostfixString();
 };
@@ -26,57 +25,51 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////////
 PostStringTransfer::PostStringTransfer(std::string expression){
-    _expression = ExpressionParser(expression).GetPraseExpression();
+    expression_ = expression_parser(expression).GetPraseExpression();
 }
-void PostStringTransfer::openScobActions(std::string str){
-    _stack.push(str);
+void PostStringTransfer::OpenScobActions(std::string str){
+    stack_.push(str);
 }
 
-void PostStringTransfer::closeScobActions(std::string str){
-    while (_stack.top() != "(")
+void PostStringTransfer::CloseScobActions(std::string str){
+    while (stack_.top() != "(")
     {
-        _postExpression.push_back(_stack.top());
-        _stack.pop();
+        postExpression_.push_back(stack_.top());
+        stack_.pop();
     }
-    _stack.pop();
+    stack_.pop();
 }
 
-void PostStringTransfer::operandActions(std::string str){
-    while (!_stack.empty() && CheckOperandsMore(_stack.top(), str))
+void PostStringTransfer::OperandActions(std::string str){
+    while (!stack_.empty() && CheckOperandsMore(stack_.top(), str))
     {
-        _postExpression.push_back(_stack.top());
-        _stack.pop();
+        postExpression_.push_back(stack_.top());
+        stack_.pop();
     }
-    _stack.push(str);
+    stack_.push(str);
 }
 
-void PostStringTransfer:: numberActions(std::string str){
-    _postExpression.push_back(str);
+void PostStringTransfer:: NumberActions(std::string str){
+    postExpression_.push_back(str);
 }
 
 void PostStringTransfer::FillPostfixstring(){
-    for (auto str : _expression)
+    for (auto str : expression_)
     {
-        if (str == "(") openScobActions(str);
-        else if (str == ")") closeScobActions(str);
-        else if (isOperation(str)) operandActions(str);
-        else numberActions(str);
+        if (str == "(") OpenScobActions(str);
+        else if (str == ")") CloseScobActions(str);
+        else if (IsOperation(str)) OperandActions(str);
+        else NumberActions(str);
     }
 
-    while (!_stack.empty())
+    while (!stack_.empty())
     {
-        _postExpression.push_back(_stack.top());
-        _stack.pop();
+        postExpression_.push_back(stack_.top());
+        stack_.pop();
     }
 }
 
 std::vector<std::string> PostStringTransfer::GetPostfixString(){
-    //new DataValidator().Check(_expression);
-    //new ScobkaValidater().Check(_expression);
-
     FillPostfixstring();
-
-    //new OperandValidator().Check(_postExpression);
-
-    return _postExpression;
+    return postExpression_;
 }

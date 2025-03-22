@@ -1,29 +1,27 @@
 #pragma once
-#include <sstream>
-#include<iostream>
-#include <iomanip>
-#include "PostStringCalculater.hpp"
+#include "PostStringCalculater.h"
 #include "PostStringTransfer.h"
-#include "point.h"
 
 class Function {
 private:
-    std::string expression;
-    Point _point;
-    std::vector<std::string> vecOperand;
+    std::string expression_;
+    std::vector<std::string> vecOperand_;
 
 public:
-    Function(std::string expression, Point point);
-    double Calculate();
+    Function(std::string expression);
+    double Calculate(Point& point);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-Function::Function(std::string expression, Point point)
-    : expression(expression), _point(point) {
-    vecOperand = PostStringTransfer(expression).GetPostfixString();
+Function::Function(std::string expression)
+    : expression_(expression){
+    if(expression.size() == 0){
+        throw std::runtime_error("Empty expression\n");
+    }
+    vecOperand_ = PostStringTransfer(expression).GetPostfixString();
 }
 
-double Function::Calculate() {
-    return PostStringCalculater(vecOperand, _point).Calculate();
+double Function::Calculate(Point& point) {
+    return PostStringCalculater(vecOperand_).Calculate(point);
 }

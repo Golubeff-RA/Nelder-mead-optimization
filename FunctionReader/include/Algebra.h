@@ -1,7 +1,11 @@
 #pragma once
+#include<stack>
+#include<iostream>
 #include<unordered_map>
 #include<string>
 #include<math.h>
+#include <sstream>
+#include <iomanip>
 #include"point.h"
 
 #define PLUS 0
@@ -11,7 +15,7 @@
 #define POWER 5
 
 
-std::unordered_map<std::string, int> caseMap = {
+std::unordered_map<std::string, int> caseMap_ = {
     { "+", PLUS },
     { "-", MINUS },
     { "*", MULT },
@@ -19,7 +23,7 @@ std::unordered_map<std::string, int> caseMap = {
     { "^", POWER}
 };
 
-std::unordered_map<std::string, int> operationMap = {
+std::unordered_map<std::string, int> operationMap_ = {
     { "(", 0 },
     { ")", 0 },
     { "+", 1 },
@@ -29,14 +33,14 @@ std::unordered_map<std::string, int> operationMap = {
     { "^", 4}
  };
 
-bool CheckOperandsMore(std::string operand1, std::string operand2) { return operationMap[operand1] >= operationMap[operand2]; }
+bool CheckOperandsMore(std::string operand1, std::string operand2) { return operationMap_[operand1] >= operationMap_[operand2]; }
 
-bool isOperation(std::string operand) { return (operationMap.count(operand) != 0 && operand != "(" && operand != ")"); }
+bool IsOperation(std::string operand) { return (operationMap_.count(operand) != 0 && operand != "(" && operand != ")"); }
 
-bool isOperation(char operand) { return operand =='+' || operand =='-' || operand =='*' || operand =='/' || operand == '^'; }
+bool IsOperation(char operand) { return operand =='+' || operand =='-' || operand =='*' || operand =='/' || operand == '^'; }
 
 double Calc(std::string operation, double number1, double number2){
-    switch (caseMap[operation])
+    switch (caseMap_[operation])
     {
     case PLUS:
         return number1 + number2;

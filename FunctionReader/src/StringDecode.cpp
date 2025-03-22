@@ -1,6 +1,4 @@
-﻿
-
-#include "Function.h"
+﻿#include "Function.h"
 
 int main()
 {
@@ -8,9 +6,9 @@ int main()
     std::vector<double> p = {1,1,2,10};
     Point point(p);
     std::cout << "start";
-    Function func(expression, point);
+    Function func(expression);
 
 
-    std::cout << std::endl << func.Calculate();
+    std::cout << func.Calculate(point);
 }
 
