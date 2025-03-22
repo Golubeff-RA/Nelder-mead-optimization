@@ -19,7 +19,8 @@ Function::Function(std::string expression)
     if(expression.size() == 0){
         throw std::runtime_error("Empty expression\n");
     }
-    vecOperand_ = PostStringTransfer(expression).GetPostfixString();
+    PostStringTransfer ps(expression_);
+    vecOperand_ = ps.GetPostfixString();
 }
 
 double Function::Calculate(Point& point) {

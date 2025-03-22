@@ -2,8 +2,10 @@
 
 int main()
 {
-    std::string expression = "(x1 + x2) * x3 / x4";
-    std::vector<double> p = {1,1,2,10};
+    std::string expression = "(sin(x1 + x2) * cos(x1) - tan(x2)) / ctg(x3)";
+    //std::cout <<"\n\n" << (sin(20) * cos(10) - tan(10)) * tan(10) <<"\n\n";
+    std::cout << "\n\n" << asin(1) <<' ' << std::atan(asin(1)) <<"\n\n";
+    std::vector<double> p = {10, 10, 10};
     Point point(p);
     std::cout << "start";
     Function func(expression);

@@ -247,6 +247,59 @@ TEST(ExeptionTest, test5)
     }    
 }
 
+TEST(ExeptionTest, test6)
+{
+    std::string expression = "";
+    std::vector<double> p = {18};
+    Point point(p);
+    try{
+        Function func(expression);
+        func.Calculate(point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Empty expression\n", e.what());
+    }    
+}
+
+TEST(ExeptionTest, test7)
+{
+    std::string expression = "12g";
+    std::vector<double> p = {18};
+    Point point(p);
+    Function func(expression);
+    try{
+        func.Calculate(point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Invalid argument 12g\n", e.what());
+    }    
+}
+
+TEST(ExeptionTest, test8)
+{
+    std::string expression = "xg";
+    std::vector<double> p = {18};
+    Point point(p);
+    Function func(expression);
+    try{
+        func.Calculate(point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Invalid argument xg", e.what());
+    }    
+}
+
+TEST(ExeptionTest, test9)
+{
+    std::string expression = "1 + x10";
+    std::vector<double> p = {18};
+    Point point(p);
+    Function func(expression);
+    try{
+        func.Calculate(point);
+    } catch (std::runtime_error &e) {
+        EXPECT_STREQ("Invalid index x10", e.what());
+    }    
+}
+
+
 TEST(MaximTest, test1)
 {
     std::string expression = "(x1 + x2) * x3 / x4";
@@ -256,6 +309,7 @@ TEST(MaximTest, test1)
     Function func(expression);
     ASSERT_EQ(func.Calculate(point), ans);
 }
+
 
 int main(int argc, char **argv)
 {

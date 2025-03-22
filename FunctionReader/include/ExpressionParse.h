@@ -29,8 +29,9 @@ std::string expression_parser::AddInList(std::string str, char symbol){
 
 void expression_parser::Parse(){
     std::string str = "";
-    for (auto symbol : expression_)
+    for (size_t i = 0; i < expression_.size(); ++i)
     {
+        char symbol = expression_[i];
         if (IsNeedSeparate(symbol))
         {
             str = AddInList(str, symbol);

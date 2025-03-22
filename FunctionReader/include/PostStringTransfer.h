@@ -16,7 +16,7 @@ private:
     void FillPostfixstring();
 
 public:
-    PostStringTransfer(std::vector<std::string> vecExpression) :  expression_(vecExpression){}
+    //PostStringTransfer(std::vector<std::string> vecExpression) :  expression_(vecExpression){}
     PostStringTransfer(std::string expression);
     std::vector<std::string> GetPostfixString();
 };
