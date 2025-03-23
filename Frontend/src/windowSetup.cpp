@@ -37,7 +37,7 @@ void renderWindow(GLFWwindow* window) {
     glfwSwapBuffers(window);
 }
 
-void closeWindow(GLFWwindow* window){
+void closeWindow(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -45,4 +45,3 @@ void closeWindow(GLFWwindow* window){
     glfwDestroyWindow(window);
     glfwTerminate();
 }
-

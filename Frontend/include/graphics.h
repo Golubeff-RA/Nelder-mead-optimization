@@ -83,7 +83,7 @@ public:
 
         if (ImGui::Button(stringRes::read_button_string))
             readFunction();
-        
+
         ImGui::SameLine();
         if (ImGui::Button(stringRes::clear_button_string))
             clearFunction();

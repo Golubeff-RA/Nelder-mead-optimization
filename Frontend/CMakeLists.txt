@@ -3,10 +3,7 @@ project(FrontendImGui)
 
 set(CMAKE_CXX_STANDARD 17) # Или более поздняя версия, если требуется
 
-# Включите модуль FindOpenGL для поиска OpenGL
 find_package(OpenGL REQUIRED)
-
-# Включите модуль FindGLFW для поиска GLFW
 find_package(glfw3 REQUIRED)
 
 if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
