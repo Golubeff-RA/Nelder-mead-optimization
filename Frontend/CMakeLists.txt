@@ -64,4 +64,4 @@ target_compile_definitions(imgui PUBLIC
 target_compile_features(imgui PUBLIC cxx_std_11)
 
 # Укажите где искать библиотеку ImGui. Не нужно если исходники рядом с main.cpp
-#link_directories(${IMGUI_DIR})
+link_directories(${IMGUI_DIR})
