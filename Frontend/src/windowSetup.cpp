@@ -1,7 +1,7 @@
 #include "windowSetup.h"
 
 GLFWwindow* setWindow() {
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Nelder-Mead method", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, stringRes::app_name_string, nullptr, nullptr);
     if (window == nullptr)
         return NULL;
     glfwMakeContextCurrent(window);

@@ -1,8 +1,5 @@
 #include "windowSetup.h"
 #include "graphics.h"
-//#include "point.h"
-//#include "solver.h"
-//#include "graphics.h"
 
 #define GL_SILENCE_DEPRECATION
 
@@ -16,20 +13,6 @@
 
 static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
-}
-
-void PrintPoint(const Point& point) {
-    ImGui::Text("(");
-    ImGui::SameLine();
-    for (size_t i = 0; i < point.Size(); ++i) {
-        ImGui::Text("%lf", point[i]);
-        ImGui::SameLine();
-        if (i != point.Size() - 1) {
-            ImGui::Text(";");
-            ImGui::SameLine();
-        }
-    }
-    ImGui::Text(")");
 }
 
 int main(int, char**) {
@@ -75,14 +58,7 @@ int main(int, char**) {
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    NelderMeadSolver solver;
-    char printFunction[128] = "";
-    char defaultString[18] = "";
-    char inputFunction[128] = "";
-    bool printPoint = false;
-    Point testPoint{std::vector<double>{1, 0, 2, 10}};
-    double testAnswer = 0;
-    std::list<Log> logs = std::list<Log>();
+    AppUI app;
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -91,54 +67,8 @@ int main(int, char**) {
             continue;
         }
 
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        ImGui::Begin("Input window");
-
-        ImGui::Text("Q(X)=");
-        ImGui::SameLine();
-        ImGui::InputText("<- input function", inputFunction, 128);
-        if (ImGui::Button("Read")) {
-            try {
-                strcpy(printFunction, inputFunction);
-                strcpy(defaultString, "Function read:");
-                logs = solver.GetLogs("x1 + x2");
-                Function func(inputFunction);
-                testAnswer = func.Calculate(testPoint);
-                printPoint = true;
-            } catch (const std::runtime_error& e) {
-                std::cerr << e.what() << '\n';
-                printPoint = false;
-                std::ostringstream errorStr;
-                errorStr << "invalid input\nError: " << e.what();
-                strcpy(printFunction, errorStr.str().c_str());
-            }
-        }
-        ImGui::SameLine();
-        if (ImGui::Button("Clear")) {
-            strcpy(printFunction, "");
-            strcpy(defaultString, "");
-            printPoint = false;
-            logs.clear();
-        }
-        ImGui::Text("%s %s", defaultString, printFunction);
-
-        if (!logs.empty() && printPoint) {
-            ImGui::Begin("Output window");
-            ImGui::Text("Test logs:");
-            for (Log log : logs) {
-                ImGui::Text("log:");
-                for (Point p : log.points)
-                    PrintPoint(p);
-                ImGui::Text("Q(X) = %lf", log.func_val);
-            }
-            ImGui::Text("Test value:");
-            PrintPoint(testPoint);
-            ImGui::Text("Function value = %lf", testAnswer);
-            ImGui::End();
-        }
-        ImGui::End();
+        app.initFrame();
+        app.showIputWindow();
 
         renderWindow(window);
     }
