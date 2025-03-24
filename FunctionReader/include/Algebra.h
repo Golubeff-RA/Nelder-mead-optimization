@@ -22,7 +22,7 @@ double Calc(std::string operation, std::vector<double>& vecNumber){
     case DIVIDER:
         if (vecNumber[0] == 0)
         {
-            throw std::runtime_error("Math error: Attempted to divide by Zero\n");
+            throw std::runtime_error("(Math error) Attempted to divide by Zero\n");
         }
         else
         {
