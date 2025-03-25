@@ -1,3 +1,5 @@
+#pragma once
+
 #include "solver.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -55,14 +57,9 @@ private:
     }
 
 public:
-    AppUI(char* defaultString, Point testPoint)
-        : _defaultString{defaultString}, _testPoint{testPoint} {
-    }
+    AppUI(char* defaultString, Point testPoint);
 
-    AppUI() : _testPoint{Point{std::vector<double>{1, 2, 3, 4}}} {
-        _defaultString = new char[strlen(stringRes::read_function_string) + 1];
-        strcpy(_defaultString, stringRes::read_function_string);
-    }
+    AppUI();
 
     ~AppUI() {
         delete[] _defaultString;

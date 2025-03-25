@@ -46,10 +46,10 @@ add_library(points STATIC
 )
 
 # Добавьте заголовочные файлы ImGui в пути поиска
-include_directories(${IMGUI_DIR},)
+include_directories(${IMGUI_DIR}, )
 
 # Добавьте свой исходный файл
-add_executable(FrontendImGui src/main.cpp src/windowSetup.cpp src/stringResources.cpp)
+add_executable(FrontendImGui src/main.cpp src/windowSetup.cpp src/stringResources.cpp src/graphics.cpp)
 
 # Свяжите вашу программу с ImGui, GLFW и OpenGL
 target_link_libraries(FrontendImGui imgui glfw ${OPENGL_LIBRARIES} points)
@@ -64,4 +64,4 @@ target_compile_definitions(imgui PUBLIC
 target_compile_features(imgui PUBLIC cxx_std_11)
 
 # Укажите где искать библиотеку ImGui. Не нужно если исходники рядом с main.cpp
-link_directories(${IMGUI_DIR})
+#link_directories(${IMGUI_DIR})
