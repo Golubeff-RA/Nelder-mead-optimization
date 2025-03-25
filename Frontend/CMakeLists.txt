@@ -10,6 +10,12 @@ if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
     message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
 endif()
 
+find_library(FUNC_LIB NAMES function_parser HINTS ${CMAKE_SOURCE_DIR}/build/FunctionReader PATH_SUFFIXES lib lib64)
+
+if(NOT FUNC_LIB)
+    message(FATAL_ERROR "Could not find the func library.  Please set the HINTS variable in CMakeLists.txt.")
+endif()
+
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
 set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
 set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
@@ -38,10 +44,15 @@ add_library(imgui STATIC
     ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
+add_library(app STATIC
+    ${FRONTEND_DIR}/src/windowSetup.cpp
+    ${FRONTEND_DIR}/src/stringResources.cpp
+    ${FRONTEND_DIR}/src/graphics.cpp
+)
 
-add_executable(${PROJECT_NAME} src/main.cpp src/windowSetup.cpp src/stringResources.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp)
 
-target_link_libraries(${PROJECT_NAME} imgui glfw ${OPENGL_LIBRARIES} point)
+target_link_libraries(${PROJECT_NAME} imgui glfw ${OPENGL_LIBRARIES} point app ${FUNC_LIB})
 
 # Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC
