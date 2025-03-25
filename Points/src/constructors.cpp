@@ -7,6 +7,9 @@ Point::Point(size_t dimensions) {
 Point::Point(const std::vector<double>& data) : data_(data) {
 }
 
+Point::Point(std::initializer_list<double>&& data) : data_(data) {
+}
+
 // rule of 5 realisation //
 Point::Point(const Point& other) : data_(other.data_) {
 }

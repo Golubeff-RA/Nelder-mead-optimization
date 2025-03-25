@@ -47,7 +47,7 @@ double Calc(std::string operation, double number1, double number2){
     case DIVIDER:
         if (number2 == 0)
         {
-            throw std::runtime_error("Math error: Attempted to divide by Zero\n");
+            throw std::runtime_error("(Math error) Attempted to divide by Zero\n");
         }
         else
         {
