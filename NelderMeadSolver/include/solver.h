@@ -24,7 +24,7 @@ public:
     // тут крафтится заглушка для возможности написания фронтенда
     // не забудь удалить потом!!!
     // в нем лежит лог для функции "x1 + x2"
-    NelderMeadSolver(double eps, size_t epoch) : eps_(eps), epoch_(epoch) {
+    NelderMeadSolver(double eps = 10e-5, size_t epoch = 100) : eps_(eps), epoch_(epoch) {
         std::vector<double> p_data1{1, 2};
         std::vector<double> p_data2{2, 3};
         std::vector<double> p_data3{3, 4};
@@ -42,9 +42,6 @@ public:
     double Optimize(const std::string& function, const Point& start_point) {
         //size_t dim_size = CountDim(function);
         //Function func{function};
-
-
-        
         return eps_ * epoch_;
     }
 

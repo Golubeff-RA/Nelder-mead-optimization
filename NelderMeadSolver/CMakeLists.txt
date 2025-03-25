@@ -5,24 +5,22 @@ enable_testing()
 
 set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
 set(FUNCTION_DIR ${CMAKE_SOURCE_DIR}/FunctionReader)
+set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
 
-add_executable(playground 
+add_library(solver STATIC
+    ${SOLVER_DIR}/src/solver.cpp
+)
+
+add_executable(${PROJECT_NAME} 
     src/playground.cpp 
-    ${CMAKE_SOURCE_DIR}/Points/src/constructors.cpp
-    ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
-    ${CMAKE_SOURCE_DIR}/Points/src/measure.cpp
-    ${CMAKE_SOURCE_DIR}/NelderMeadSolver/src/solver.cpp
 )
 add_executable(${PROJECT_NAME}.tests 
     tests/solverTesting.cpp
-    ${CMAKE_SOURCE_DIR}/Points/src/constructors.cpp
-    ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
-    ${CMAKE_SOURCE_DIR}/Points/src/measure.cpp
-    ${CMAKE_SOURCE_DIR}/NelderMeadSolver/src/solver.cpp
 )
 include_directories(
     ${CMAKE_SOURCE_DIR}/FunctionReader/include
     ${CMAKE_SOURCE_DIR}/NelderMeadSolver/include
     ${CMAKE_SOURCE_DIR}/Points/include
 )
-target_link_libraries(${PROJECT_NAME}.tests gtest gmock pthread)
+target_link_libraries(${PROJECT_NAME}.tests gtest gmock pthread point)
+target_link_libraries(${PROJECT_NAME} point)
