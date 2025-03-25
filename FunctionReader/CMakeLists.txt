@@ -10,6 +10,13 @@ add_executable(
     ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
 
 )
+
+add_executable(
+    run src/StringDecode.cpp
+    ${CMAKE_SOURCE_DIR}/Points/src/constructors.cpp
+    ${CMAKE_SOURCE_DIR}/Points/src/operators.cpp
+
+)
 include_directories(
     ${CMAKE_SOURCE_DIR}/FunctionReader/include
     ${CMAKE_SOURCE_DIR}/Points/include
