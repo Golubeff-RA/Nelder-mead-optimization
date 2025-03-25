@@ -44,7 +44,7 @@ int main(int, char**) {
     Point p2{std::vector<double>{1, 2, 3, 4}};
     Point p3 = p1 + p2;
 
-    //NelderMeadSolver solver;
+    NelderMeadSolver solver(10e-5, 100);
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return 1;
@@ -107,7 +107,7 @@ int main(int, char**) {
     char defaultString[18] = "";
     char inputFunction[128] = "";
     bool printPoint = false;
-    Point testPoint{std::vector<double>{1, 0, 2, 10}};
+    Point testPoint{1, 2, 3, 4};
     double testAnswer = 0;
     std::list<Log> logs = std::list<Log>();
 
@@ -153,15 +153,15 @@ int main(int, char**) {
 
         if (!logs.empty() && printPoint) {
             ImGui::Begin("Output window");
-            ImGui::Text("Test point:");
-            PrintPoint(p1);
-            ImGui::Text("Test logs:");
-            for (Log log : logs) {
+            //ImGui::Text("Test point:");
+            //PrintPoint(p1);
+            //ImGui::Text("Test logs:");
+            /*for (Log log : logs) {
                 ImGui::Text("log:");
                 for (Point p : log.points)
                     PrintPoint(p);
                 ImGui::Text("Q(X) = %lf", log.func_val);
-            }
+            }*/
             ImGui::Text("Test value:");
             PrintPoint(testPoint);
             ImGui::Text("Function value = %lf", testAnswer);
