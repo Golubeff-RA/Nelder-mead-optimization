@@ -9,8 +9,6 @@
 #include <GLFW/glfw3.h>  // Will drag system OpenGL headers
 
 #include <vector>
-#include <string>
-#include <sstream>
 #include "point.h"
 #include "solver.h"
 #include "Function.h"
@@ -19,6 +17,7 @@
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
+
 
 static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -60,7 +59,7 @@ int main(int, char**) {
     if (!glfwInit())
         return 1;
 
-    // Decide GL+GLSL versions
+        // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100 (WebGL 1.0)
     const char* glsl_version = "#version 100";
@@ -89,6 +88,8 @@ int main(int, char**) {
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
+    // Create window with graphics context
+
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Nelder-Mead method", nullptr, nullptr);
     if (window == nullptr)
         return 1;
@@ -104,6 +105,7 @@ int main(int, char**) {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
     io.Fonts->AddFontFromFileTTF("../../Frontend/imgui/misc/fonts/DroidSans.ttf", 32.0f);
 
+    // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
@@ -112,7 +114,7 @@ int main(int, char**) {
     ImGui_ImplGlfw_InstallEmscriptenCallbacks(window, "#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
-
+    // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     char printFunction[128] = "";
     char defaultString[18] = "";
@@ -121,6 +123,7 @@ int main(int, char**) {
     Point testPoint{1, 2, 3, 4};
     double testAnswer = 0;
     std::list<Log> logs = std::list<Log>();
+    // Main loop
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -129,6 +132,7 @@ int main(int, char**) {
             continue;
         }
 
+        // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -137,24 +141,12 @@ int main(int, char**) {
         ImGui::Text("Q(X)=");
         ImGui::SameLine();
         ImGui::InputText("<- input function", inputFunction, 128);
-        if (ImGui::Button("Read")) {
-            try {
-                strcpy(printFunction, inputFunction);
-                strcpy(defaultString, "Function read:");
-                logs = solver.GetLogs("x1 + x2");
-                Function func(inputFunction);
-                testAnswer = func.Calculate(testPoint);
-                printPoint = true;
-            } catch (const std::runtime_error& e) {
-                std::cerr << e.what() << '\n';
-                printPoint = false;
-                std::ostringstream errorStr;
-                errorStr << "invalid input\nError: " << e.what();
-                strcpy(printFunction, errorStr.str().c_str());
-            }
+        if (ImGui::Button("Read")){
+            strcpy(printFunction, inputFunction);
+            strcpy(defaultString, "Function readed:");
         }
         ImGui::SameLine();
-        if (ImGui::Button("Clear")) {
+        if (ImGui::Button("Clear")){
             strcpy(printFunction, "");
             strcpy(defaultString, "");
             printPoint = false;
@@ -198,6 +190,7 @@ int main(int, char**) {
     EMSCRIPTEN_MAINLOOP_END;
 #endif
 
+    // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -208,7 +201,7 @@ int main(int, char**) {
     return 0;
 }
 
-// комментарии на всякий случай
+// âñå êîììåíòàðèè, âäðóã íàäî áóäåò
 //  Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
 //  (GLFW is a cross-platform general purpose library for handling windows, inputs,
 //  OpenGL/Vulkan/Metal graphics context creation, etc.)
