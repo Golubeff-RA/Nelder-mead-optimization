@@ -1,10 +1,12 @@
 #pragma once
 #include <vector>
+#include <initializer_list>
 
 class Point {
 public:
     Point(size_t dimensions);
     Point(const std::vector<double>& data);
+    Point(std::initializer_list<double>&& data);
     // rule of 5 realisation //
     Point(const Point& other);
     Point(Point&& other);
@@ -40,3 +42,6 @@ private:
 
 // вычисляет меру симплекса с помощью определителя матрицы
 double Measure(const std::vector<Point>& simplex);
+bool CheckDimensions(const std::vector<Point>& simplex);
+double Factorial (size_t n);
+double Determinant(const std::vector<std::vector<double>>& matrix);

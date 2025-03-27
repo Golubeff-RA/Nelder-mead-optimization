@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(FrontendImGui)
 
-set(CMAKE_CXX_STANDARD 17) # Или более поздняя версия, если требуется
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -10,7 +10,12 @@ if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
     message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
 endif()
 
-# Путь к исходникам ImGui. Укажите реальный путь!
+find_library(FUNC_LIB NAMES function_parser HINTS ${CMAKE_SOURCE_DIR}/build/FunctionReader PATH_SUFFIXES lib lib64)
+
+if(NOT FUNC_LIB)
+    message(FATAL_ERROR "Could not find the func library.  Please set the HINTS variable in CMakeLists.txt.")
+endif()
+
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
 set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
 set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
@@ -21,7 +26,6 @@ set(FONT_PATH "${IMGUI_DIR}/misc/fonts/DroidSans.ttf")
 
 add_definitions(-DFONT_PATH=\"${FONT_PATH}\")
 
-# Добавьте исходники ImGui
 include_directories(
     ${IMGUI_DIR}
     ${IMGUI_DIR_BACK}
@@ -30,38 +34,27 @@ include_directories(
     ${FUNCTION_DIR}/include
     ${FRONTEND_DIR}/include
 )
+
 add_library(imgui STATIC
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_draw.cpp
     ${IMGUI_DIR}/imgui_tables.cpp
     ${IMGUI_DIR}/imgui_widgets.cpp
-    ${IMGUI_DIR}/imgui_demo.cpp # Опционально, для демо-примера
     ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
     ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
 
-add_library(points STATIC
-    ${POINT_DIR}/src/constructors.cpp
-    ${POINT_DIR}/src/operators.cpp
+add_library(app STATIC
+    ${FRONTEND_DIR}/src/windowSetup.cpp
+    ${FRONTEND_DIR}/src/stringResources.cpp
+    ${FRONTEND_DIR}/src/graphics.cpp
 )
 
-# Добавьте заголовочные файлы ImGui в пути поиска
-include_directories(${IMGUI_DIR}, )
+add_executable(${PROJECT_NAME} src/main.cpp)
 
-# Добавьте свой исходный файл
-add_executable(FrontendImGui src/main.cpp src/windowSetup.cpp src/stringResources.cpp)
-
-# Свяжите вашу программу с ImGui, GLFW и OpenGL
-target_link_libraries(FrontendImGui imgui glfw ${OPENGL_LIBRARIES} points)
-
+target_link_libraries(${PROJECT_NAME} imgui glfw ${OPENGL_LIBRARIES} point app ${FUNC_LIB})
 
 # Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC
     IMGUI_IMPL_OPENGL_LOADER_GLAD # Или другая библиотека загрузки OpenGL, если вы ее используете
 )
-
-# Включите поддержку C++11/14/17 для ImGui (если требуется)
-target_compile_features(imgui PUBLIC cxx_std_11)
-
-# Укажите где искать библиотеку ImGui. Не нужно если исходники рядом с main.cpp
-#link_directories(${IMGUI_DIR})
