@@ -67,6 +67,7 @@ public:
             ++counter;
         }
 
+        optimized_functions_.erase(function);
         optimized_functions_.insert({function, std::move(current_optimization)});
         return simplex.begin()->first;
     }
@@ -122,11 +123,11 @@ public:
 
         return simplex;
     }
+    double eps_;
+    size_t epoch_;
 
 private:
     std::map<std::string, std::list<Log>> optimized_functions_;
-    const double eps_;
-    const size_t epoch_;
     const double expan_coef_ = 1.8;
     const double contr_coef_ = 0.3;
     const double shrnk_coef_ = 0.5;

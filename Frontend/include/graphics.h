@@ -7,31 +7,35 @@
 
 class AppUI {
 private:
-    NelderMeadSolver _solver;
-    char _printFunction[128] = "";
+    NelderMeadSolver _solver{10e-5, 100};
+    char _readedFunction[128] = "";
     char _inputFunction[128] = "";
     char* _defaultString;
-    Point _testPoint;
-    double _testAnswer = 0;
+    Point _startPoint = Point{{0}};
     std::list<Log> _logs = std::list<Log>();
-    bool _printPoint = false;
+    bool _printFunction = false;
+    bool _optimizeFunction = false;
     bool _printDefault = false;
+    bool _showSettings = false;
+    bool _showLogs = false;
+    double _answer = 0;
+    float _error = 0.001;
+    int _iterations = 100;
+    size_t _dimensions = 0;
 
     void printPoint(const Point& point);
-
     void readFunction();
-
+    void optimizeFunction();
     void clearFunction();
 
 public:
-    AppUI(char* defaultString, Point testPoint);
+    AppUI(char* defaultString);
     AppUI();
 
     ~AppUI();
 
     void initFrame();
-
     void showIputWindow();
-
     void showOutputWindow();
+    void showSettingsWindow();
 };
