@@ -56,19 +56,19 @@ void AppUI::showOutputWindow() {
             ImGui::Text("%s %lf", stringRes::measure_string, log.func_val);
             index++;
         }
-    ImGui::Text("Answer:\n%s %lf", stringRes::measure_string, _answer);
+    ImGui::Text("%s\n%s %lf", stringRes::answer_string, stringRes::measure_string, _answer);
     ImGui::End();
 }
 
 void AppUI::showSettingsWindow() {
-    ImGui::Begin("Settings window");
+    ImGui::Begin(stringRes::settings_window_string);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 250);
-    ImGui::InputFloat("Input solving error", &_error);
+    ImGui::InputFloat(stringRes::solving_error_string, &_error);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 15);
     ImGui::SliderFloat("##se", &_error, 0.0f, 1.0f);
 
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 270);
-    ImGui::InputInt("Input max iterations", &_iterations);
+    ImGui::InputInt(stringRes::max_iterations_string, &_iterations);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 15);
     ImGui::SliderInt("##mi", &_iterations, 0, 1000);
 
@@ -78,11 +78,11 @@ void AppUI::showSettingsWindow() {
         ImGui::InputDouble(id.c_str(), &(_startPoint[i]));
         ImGui::SameLine();
     }
-    ImGui::Text("Start point");
+    ImGui::Text("%s", stringRes::start_point_string);
 
-    ImGui::Text("Saved error: %f", _error);
-    ImGui::Text("Saved iterations count: %d", _iterations);
-    if (ImGui::Button("Close"))
+    ImGui::Text("%s %f", stringRes::saved_error_string, _error);
+    ImGui::Text("%s %d", stringRes::saved_iterations_string, _iterations);
+    if (ImGui::Button(stringRes::close_button_string))
         _showSettings = false;
     ImGui::End();
 }
@@ -125,7 +125,7 @@ void AppUI::readFunction() {
 }
 
 void AppUI::optimizeFunction() {
-    if (ImGui::Button("Optimize")) {
+    if (ImGui::Button(stringRes::optimize_button_string)) {
         _solver.eps_ = _error;
         _solver.epoch_ = _iterations;
         _answer = _solver.Optimize(_inputFunction, _startPoint);
@@ -133,10 +133,10 @@ void AppUI::optimizeFunction() {
         _optimizeFunction = true;
     }
     ImGui::SameLine();
-    if (ImGui::Button("Settings"))
+    if (ImGui::Button(stringRes::settings_button_string))
         _showSettings = true;
     ImGui::SameLine();
-    ImGui::Checkbox("Show logs", &_showLogs);
+    ImGui::Checkbox(stringRes::show_logs_checkbox, &_showLogs);
 }
 
 void AppUI::clearFunction() {
