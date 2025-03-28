@@ -9,11 +9,9 @@ set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
 
 find_library(FUNC_LIB NAMES function_parser HINTS ${CMAKE_SOURCE_DIR}/build/FunctionReader PATH_SUFFIXES lib lib64)
 
-#if(NOT FUNC_LIB)
- #   message(FATAL_ERROR "Could not find the point library.  Please set the HINTS variable in CMakeLists.txt.")
-#else()
- #   message(STATUS "Found point library at: ${POINT_LIB}")
-#endif()
+if(NOT FUNC_LIB)
+    message(FATAL_ERROR "Could not find the point library.  Please set the HINTS variable in CMakeLists.txt.")
+endif()
 
 add_library(solver STATIC
     ${SOLVER_DIR}/src/solver.cpp
