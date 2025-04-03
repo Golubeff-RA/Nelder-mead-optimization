@@ -39,5 +39,5 @@ add_library(function_parser STATIC
 add_executable(${PROJECT_NAME}.tests tests/main.cpp ${FUNC_PARSER})
 add_executable(${PROJECT_NAME} src/StringDecode.cpp ${FUNC_PARSER})
 
-target_link_libraries(${PROJECT_NAME}.tests gtest gmock pthread) #${POINT_LIB})
-target_link_libraries(${PROJECT_NAME}) #${POINT_LIB})
+target_link_libraries(${PROJECT_NAME}.tests gtest gmock pthread point) #${POINT_LIB})
+target_link_libraries(${PROJECT_NAME} PUBLIC point) #${POINT_LIB})

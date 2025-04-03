@@ -12,6 +12,7 @@ add_library(point STATIC
     ${POINTS_DIR}/src/operators.cpp
     ${POINTS_DIR}/src/measure.cpp
     )
+    
 add_executable(${PROJECT_NAME}.tests tests/pointsTesting.cpp)
 
 target_link_libraries(${PROJECT_NAME}.tests gtest gmock pthread point)
