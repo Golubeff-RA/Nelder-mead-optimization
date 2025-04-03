@@ -7,7 +7,13 @@ double PostStringCalculater::DecodeNumber(std::string number, Point& point) {
 
     if (number[0] != 'x' && number[std::min(1, (int)number.size() - 1)] != 'x') {
         try {
-            return std::stod(number);
+            size_t parse_number = 0;
+            double ans = std::stod(number, &parse_number);
+            if (parse_number != number.size()) {
+                throw std::runtime_error("Invalid number " + number);
+            } else {
+                return ans;
+            }
         } catch (const std::invalid_argument& ia) {
             throw std::runtime_error("Invalid argument " + number);
         } catch (const std::out_of_range& oor) {
@@ -17,9 +23,10 @@ double PostStringCalculater::DecodeNumber(std::string number, Point& point) {
 
     try {
         bool isMinus = (number[0] == '-');
-        int index = std::stoi(number.substr(1 + (isMinus))) - 1;
+        size_t parse_number = 0;
+        int index = std::stoi(number.substr(1 + (isMinus)), &parse_number) - 1;
         /////////////////////////////////
-        if (index < 0 || index >= (int)point.Size()) {
+        if (index < 0 || index >= (int)point.Size() || parse_number != number.size() - 1 - isMinus) {
             throw std::runtime_error("Invalid index " + number);
         } else {
             return point[index] * (isMinus ? -1 : 1);

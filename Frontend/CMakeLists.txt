@@ -3,26 +3,13 @@ project(FrontendImGui)
 
 set(CMAKE_CXX_STANDARD 17)
 
+
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
 if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
-    message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
+   message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
 endif()
-
-find_library(FUNC_LIB NAMES function_parser HINTS ${CMAKE_SOURCE_DIR}/build/FunctionReader PATH_SUFFIXES lib lib64)
-
-if(NOT FUNC_LIB)
-    message(FATAL_ERROR "Could not find the func library.  Please set the HINTS variable in CMakeLists.txt.")
-endif()
-
-set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
-set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
-set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
-set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
-set(FUNCTION_DIR ${CMAKE_SOURCE_DIR}/FunctionReader)
-set(FRONTEND_DIR ${CMAKE_SOURCE_DIR}/Frontend)
-set(FONT_PATH "${IMGUI_DIR}/misc/fonts/DroidSans.ttf")
 
 add_definitions(-DFONT_PATH=\"${FONT_PATH}\")
 
@@ -52,7 +39,8 @@ add_library(app STATIC
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-target_link_libraries(${PROJECT_NAME} imgui glfw ${OPENGL_LIBRARIES} point app ${FUNC_LIB})
+target_link_libraries(${PROJECT_NAME} app imgui glfw ${OPENGL_LIBRARIES} GL dl point function_parser solver)
+    
 
 # Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC

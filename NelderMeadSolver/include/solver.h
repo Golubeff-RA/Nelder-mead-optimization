@@ -84,7 +84,13 @@ public:
                     num.push_back(function[idx]);
                     ++idx;
                 }
-                vars.insert(std::stoull(num));
+                try {
+                    vars.insert(std::stoull(num));
+                } catch (const std::invalid_argument& ia) {
+                    throw std::runtime_error("Invalid argument " + num);
+                } catch (const std::out_of_range& oor) {
+                    throw std::runtime_error("Out of Range error: " + num);
+                }
             }
             ++idx;
         }
