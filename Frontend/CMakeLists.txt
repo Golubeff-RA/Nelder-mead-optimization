@@ -7,23 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
-#if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
- #   message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
-#endif()
-
-#find_library(FUNC_LIB NAMES function_parser HINTS ${CMAKE_SOURCE_DIR}/build/FunctionReader PATH_SUFFIXES lib lib64)
-
-#if(NOT FUNC_LIB)
-#    message(FATAL_ERROR "Could not find the func library.  Please set the HINTS variable in CMakeLists.txt.")
-#endif()
-
-set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
-set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
-set(POINT_DIR ${CMAKE_SOURCE_DIR}/Points)
-set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
-set(FUNCTION_DIR ${CMAKE_SOURCE_DIR}/FunctionReader)
-set(FRONTEND_DIR ${CMAKE_SOURCE_DIR}/Frontend)
-set(FONT_PATH "${IMGUI_DIR}/misc/fonts/DroidSans.ttf")
+if(NOT OpenGL_FOUND OR NOT glfw3_FOUND)
+   message(FATAL_ERROR "Необходимые библиотеки (OpenGL и GLFW) не найдены.")
+endif()
 
 add_definitions(-DFONT_PATH=\"${FONT_PATH}\")
 
