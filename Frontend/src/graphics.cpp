@@ -101,10 +101,6 @@ void AppUI::printPoint(const Point& point) {
     ImGui::Text(")");
 }
 
-void testLaunch(Function &func, Point &_startPoint) {
-    func.Calculate(_startPoint);
-}
-
 void AppUI::readFunction() {
     _printDefault = true;
     _optimizeFunction = false;
@@ -112,13 +108,13 @@ void AppUI::readFunction() {
     try {
         strcpy(_readedFunction, _inputFunction);
         Function func(_inputFunction);
+        func.Calculate(_startPoint);
         _printFunction = true;
         _dimensions = _solver.CountDim(_inputFunction);
         std::vector<double> p;
         for (size_t i = 0; i < _dimensions; i++)
             p.push_back(0);
         _startPoint = Point{p};
-        func.Calculate(_startPoint); //check that function get right expression 
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << '\n';
         _printFunction = false;
