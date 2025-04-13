@@ -38,4 +38,5 @@ public:
     void showIputWindow();
     void showOutputWindow();
     void showSettingsWindow();
+    bool isExpressionCorrect(std::string expression);
 };
