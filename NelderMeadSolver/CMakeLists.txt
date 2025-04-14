@@ -3,8 +3,6 @@ project(NelderMeadSolver)
 
 add_subdirectory(FunctionReader)
 
-#include_directories(${POINT_DIR}/include)
-
 add_library(point STATIC
     ${POINT_DIR}/src/constructors.cpp
     ${POINT_DIR}/src/operators.cpp
@@ -14,11 +12,17 @@ add_library(point STATIC
 enable_testing()
 
 add_library(solver SHARED
+    ${POINT_DIR}/src/constructors.cpp
+    ${POINT_DIR}/src/operators.cpp
+    ${POINT_DIR}/src/measure.cpp
     ${SOLVER_DIR}/src/solver.cpp
+    ${SOLVER_DIR}/src/solver_utils.cpp
 )
 
 add_executable(${PROJECT_NAME} 
     src/playground.cpp 
+    ${SOLVER_DIR}/src/solver.cpp
+    ${SOLVER_DIR}/src/solver_utils.cpp
 )
 
 include_directories(

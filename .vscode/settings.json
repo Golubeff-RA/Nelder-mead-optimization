@@ -69,6 +69,7 @@
         "variant": "cpp",
         "any": "cpp",
         "map": "cpp",
-        "format": "cpp"
+        "format": "cpp",
+        "regex": "cpp"
     },
 }

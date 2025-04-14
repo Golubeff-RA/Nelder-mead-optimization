@@ -1,5 +1,5 @@
-#include "windowSetup.h"
 #include "graphics.h"
+#include "windowSetup.h"
 
 #define GL_SILENCE_DEPRECATION
 
@@ -20,7 +20,7 @@ int main(int, char**) {
     if (!glfwInit())
         return 1;
 
-    // Decide GL+GLSL versions
+        // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
     // GL ES 2.0 + GLSL 100 (WebGL 1.0)
     const char* glsl_version = "#version 100";

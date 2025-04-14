@@ -1,4 +1,5 @@
 #include "graphics.h"
+
 #include <regex>
 
 AppUI::AppUI(char* defaultString) : _defaultString{defaultString} {
@@ -102,11 +103,10 @@ void AppUI::printPoint(const Point& point) {
     ImGui::Text(")");
 }
 
-bool AppUI::isExpressionCorrect(std::string expression){
+bool AppUI::isExpressionCorrect(std::string expression) {
     std::regex token_regex(
         R"(\b(sin|cos|tan|ctg|ln|log2|log|sqrt|abs)\b|\bx\d+\b|[-+*/^() ]|\d+\.?\d*)",
-        std::regex_constants::ECMAScript
-    );
+        std::regex_constants::ECMAScript);
 
     auto words_begin = std::sregex_iterator(expression.begin(), expression.end(), token_regex);
     auto words_end = std::sregex_iterator();
@@ -124,13 +124,13 @@ void AppUI::readFunction() {
     _optimizeFunction = false;
     _showSettings = false;
     strcpy(_readedFunction, _inputFunction);
-    std::cout<<isExpressionCorrect(_inputFunction);
-    if(isExpressionCorrect(_inputFunction)){
+    std::cout << isExpressionCorrect(_inputFunction);
+    if (isExpressionCorrect(_inputFunction)) {
         try {
             Function func(_inputFunction);
             _printFunction = true;
             _dimensions = _solver.CountDim(_inputFunction);
-            //if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
+            // if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
             std::vector<double> p;
             for (size_t i = 0; i < _dimensions; i++)
                 p.push_back(0);
@@ -142,8 +142,7 @@ void AppUI::readFunction() {
             errorStr << stringRes::invalid_input_string << e.what();
             strcpy(_readedFunction, errorStr.str().c_str());
         }
-    }
-    else{
+    } else {
         _printFunction = false;
         strcpy(_readedFunction, "invalid expression");
     }
@@ -151,8 +150,8 @@ void AppUI::readFunction() {
 
 void AppUI::optimizeFunction() {
     if (ImGui::Button(stringRes::optimize_button_string)) {
-        _solver.eps_ = _error;
-        _solver.epoch_ = _iterations;
+        _solver.eps() = _error;
+        _solver.epoch()= _iterations;
         _answer = _solver.Optimize(_inputFunction, _startPoint);
         _logs = _solver.GetLogs(_inputFunction);
         _optimizeFunction = true;
