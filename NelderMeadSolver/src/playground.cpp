@@ -12,18 +12,16 @@ void PrintPoint (const Point& p) {
 }
 
 int main() {
-    NelderMeadSolver solv{10e-5, 100};
+    NelderMeadSolver solv{10e-30, 500};
+    solv.Optimize("x1^2 + x2^2 + x3^2 + x4^2 + x5^2 + x6^2 + x7^2 + x8^2", Point{{10, 11, 12, 13, 14, 15, 9, 7}});
+    auto log = solv.GetLogs("x1^2 + x2^2 + x3^2 + x4^2 + x5^2 + x6^2 + x7^2 + x8^2");
+    auto l = std::prev(log.end());
+    std::cout << "Q(X) = " << l->func_val << " measure = " << l->measure << std::endl;
+    solv.Optimize("x1^2 + x2^2", Point{{17, 11}});
+    log = solv.GetLogs("x1^2 + x2^2");
+    l = std::prev(log.end());
+    std::cout << "Q(X) = " << l->func_val << " measure = " << l->measure << std::endl;
 
-    solv.Optimize("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2", Point{{3, 5}});
-    auto log = solv.GetLogs("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2");
-    for (auto l : log) {
-        std::cout << "Q(X) = " << l.func_val << " measure = " << l.measure << std::endl;
-        for (auto p : l.points) {
-            std::cout << "   ";
-            PrintPoint(p);
-            std::cout << "\n";
-        }
-    }
-
+    
     return 0;
 }
