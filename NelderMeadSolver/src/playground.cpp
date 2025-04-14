@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 #include <vector>
 #include "point.h"
 #include "solver.h"
@@ -13,7 +14,6 @@ void PrintPoint (const Point& p) {
 
 int main() {
     NelderMeadSolver solv{10e-5, 100};
-
     solv.Optimize("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2", Point{{3, 5}});
     auto log = solv.GetLogs("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2");
     for (auto l : log) {
