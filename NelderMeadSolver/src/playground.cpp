@@ -13,11 +13,17 @@ void PrintPoint (const Point& p) {
 
 int main() {
     NelderMeadSolver solv{10e-5, 100};
-    Point start_point{{0,0,0,0}};
-    auto simplex = solv.GenerateSimplex(4, start_point);
-    for (auto& p : simplex) {
-        PrintPoint(p);
-        std::cout << "\n";
+
+    solv.Optimize("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2", Point{{3, 5}});
+    auto log = solv.GetLogs("x1^2 + x1 * x2 + x2^2 - 6*x1 - 9*x2");
+    for (auto l : log) {
+        std::cout << "Q(X) = " << l.func_val << " measure = " << l.measure << std::endl;
+        for (auto p : l.points) {
+            std::cout << "   ";
+            PrintPoint(p);
+            std::cout << "\n";
+        }
     }
+
     return 0;
 }

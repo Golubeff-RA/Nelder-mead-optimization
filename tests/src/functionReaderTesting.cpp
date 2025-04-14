@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "Function.h"
+#include "function.h"
 
 
 TEST(UnoMinusOprations, test1)
@@ -193,7 +193,7 @@ TEST(ExeptionTest, test1)
     try{
         func.Calculate(point);
     } catch (std::runtime_error &e) {
-        EXPECT_STREQ("Math error: Attempted to divide by Zero\n", e.what());
+        EXPECT_STREQ("(Math error) Attempted to divide by Zero\n", e.what());
     }    
 }
 
@@ -243,7 +243,7 @@ TEST(ExeptionTest, test5)
     try{
         func.Calculate(point);
     } catch (std::runtime_error &e) {
-        EXPECT_STREQ("Math error: Attempted to divide by Zero\n", e.what());
+        EXPECT_STREQ("(Math error) Attempted to divide by Zero\n", e.what());
     }    
 }
 
@@ -269,7 +269,7 @@ TEST(ExeptionTest, test7)
     try{
         func.Calculate(point);
     } catch (std::runtime_error &e) {
-        EXPECT_STREQ("Invalid argument 12g\n", e.what());
+        EXPECT_STREQ("Invalid argument 12g", e.what());
     }    
 }
 
