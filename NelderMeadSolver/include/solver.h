@@ -107,7 +107,7 @@ public:
             center += it->second;
         }
 
-        return center *= 1.0 / (simplex.size() - 1);
+        return center *= 1.0 / static_cast<double>(simplex.size() - 1);
     }
 
     // генерирует опорный симплекс
