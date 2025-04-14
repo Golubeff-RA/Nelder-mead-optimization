@@ -1,8 +1,8 @@
 #pragma once
-#include "solver.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "solver.h"
 #include "stringResources.h"
 
 class AppUI {
@@ -11,7 +11,7 @@ private:
     char _readedFunction[128] = "";
     char _inputFunction[128] = "";
     char* _defaultString;
-    Point _startPoint = Point{std::vector<double>{0}};
+    Point _startPoint = Point(0);
     std::list<Log> _logs = std::list<Log>();
     bool _printFunction = false;
     bool _optimizeFunction = false;
