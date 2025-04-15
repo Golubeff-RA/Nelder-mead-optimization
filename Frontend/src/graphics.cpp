@@ -155,11 +155,19 @@ void AppUI::readFunction() {
 
 void AppUI::optimizeFunction() {
     if (ImGui::Button(stringRes::optimize_button_string)) {
-        _solver.eps() = _error;
-        _solver.epoch()= _iterations;
-        _answer = _solver.Optimize(_inputFunction, _startPoint);
-        _logs = _solver.GetLogs(_inputFunction);
-        _optimizeFunction = true;
+        try {
+            _solver.eps() = _error;
+            _solver.epoch() = _iterations;
+            _answer = _solver.Optimize(_inputFunction, _startPoint);
+            _logs = _solver.GetLogs(_inputFunction);
+            _optimizeFunction = true;
+        } catch (const std::runtime_error& e) {
+            _optimizeFunction = false;
+            std::cerr << e.what() << '\n';
+            std::ostringstream errorStr;
+            errorStr << stringRes::invalid_input_string << e.what();
+            strcpy(_readedFunction, errorStr.str().c_str());
+        }
     }
     ImGui::SameLine();
     if (ImGui::Button(stringRes::settings_button_string))
