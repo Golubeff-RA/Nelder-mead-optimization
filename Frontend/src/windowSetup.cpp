@@ -4,6 +4,8 @@ GLFWwindow* setWindow() {
     GLFWwindow* window = glfwCreateWindow(1280, 720, stringRes::app_name_string, nullptr, nullptr);
     if (window == nullptr)
         return NULL;
+
+    glfwMaximizeWindow(window);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
