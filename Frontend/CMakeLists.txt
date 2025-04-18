@@ -39,7 +39,7 @@ add_library(app STATIC
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-target_link_libraries(${PROJECT_NAME} app imgui glfw ${OPENGL_LIBRARIES} GL dl point function_parser solver)
+target_link_libraries(${PROJECT_NAME} PRIVATE app imgui glfw ${OPENGL_LIBRARIES} GL dl solver)
     
 
 # Укажите флаги компиляции для ImGui (если необходимо)
