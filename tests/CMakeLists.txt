@@ -9,8 +9,8 @@ include_directories(
 add_executable(solver.tests src/solverTesting.cpp)
 add_executable(points.tests src/pointsTesting.cpp)
 add_executable(functionReader.tests src/functionReaderTesting.cpp)
-target_link_libraries(solver.tests  gtest gmock pthread function_parser )
-target_link_libraries(points.tests gtest gmock pthread point)
-target_link_libraries(functionReader.tests gtest gmock pthread function_parser) #${POINT_LIB})
+target_link_libraries(solver.tests  gtest gmock pthread solver )
+target_link_libraries(points.tests gtest gmock pthread solver)
+target_link_libraries(functionReader.tests gtest gmock pthread solver) #${POINT_LIB})
 
 

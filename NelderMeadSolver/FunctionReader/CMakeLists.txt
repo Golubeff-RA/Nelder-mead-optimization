@@ -18,7 +18,7 @@ set (FUNC_PARSER
     ${FUNC_DIR}/post_string_transfer.cpp
 )
 
-add_library(function_parser STATIC
+add_library(function_parser SHARED
     ${POINT_DIR}/src/constructors.cpp
     ${POINT_DIR}/src/operators.cpp
     ${POINT_DIR}/src/measure.cpp
