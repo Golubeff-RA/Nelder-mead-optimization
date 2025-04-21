@@ -100,6 +100,7 @@ void AppUI::printPoint(const Point& point) {
             ImGui::SameLine();
         }
     }
+    
     ImGui::Text(")");
 }
 
