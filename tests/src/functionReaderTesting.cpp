@@ -269,7 +269,7 @@ TEST(ExeptionTest, test7)
     try{
         func.Calculate(point);
     } catch (std::runtime_error &e) {
-        EXPECT_STREQ("Invalid argument 12g", e.what());
+        EXPECT_STREQ("Invalid number 12g", e.what());
     }    
 }
 

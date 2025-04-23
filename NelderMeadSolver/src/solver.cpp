@@ -4,6 +4,7 @@ NelderMeadSolver::NelderMeadSolver(double eps, size_t epoch) : eps_(eps), epoch_
 }
 
 double NelderMeadSolver::Optimize(const std::string& function, const Point& start_point) {
+    srand(time(0));
     std::list<Log> current_optimization;
     double measure = 100;
     size_t dim_size = CountDim(function);

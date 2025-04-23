@@ -22,7 +22,9 @@ int main() {
     log = solv.GetLogs("x1^2 + x2^2");
     l = std::prev(log.end());
     std::cout << "Q(X) = " << l->func_val << " measure = " << l->measure << std::endl;
-
-    
+    solv.Optimize("x1 + x2", Point{{0, 0}});
+    log = solv.GetLogs("x1 + x2");
+    l = std::prev(log.end());
+    std::cout << "Q(X) = " << l->func_val << " measure = " << l->measure << std::endl;
     return 0;
 }

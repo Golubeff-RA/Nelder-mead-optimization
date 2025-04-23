@@ -1,8 +1,10 @@
 #pragma once
 
+#include <ctime>
 #include <exception>
 #include <list>
 #include <map>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -40,8 +42,8 @@ private:
     double eps_;
     size_t epoch_;
     std::map<std::string, std::list<Log>> optimized_functions_;
-    const double expan_coef_ = 1.9;
-    const double shrnk_coef_ = 0.4;
+    const double expan_coef_ = 2;
+    const double shrnk_coef_ = 0.5;
     const double refle_coef_ = 1;
     const size_t update_simplex_ = 25;
 

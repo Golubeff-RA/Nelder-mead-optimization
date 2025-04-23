@@ -40,7 +40,7 @@ std::multimap<double, Point> NelderMeadSolver::GenerateSimplex_(size_t dim, Poin
 
     for (size_t idx = 1; idx <= dim; ++idx) {
         Point point(start_point);
-        point[idx - 1] = point[idx - 1] + 1.0;
+        point[idx - 1] = point[idx - 1] + (rand() % 2 == 0 ? -1 : 1) * 1.0;
         simplex.insert({func.Calculate(point), point});
     }
 
@@ -76,6 +76,7 @@ void NelderMeadSolver::GlobalShrink_(Function& func, std::multimap<double, Point
     std::vector<Point> shrinked;
     shrinked.reserve(simplex.size());
     shrinked.push_back(best);
+    std::cout << "Global shrink";
     for (auto it = std::next(simplex.begin()); it != simplex.end(); ++it) {
         shrinked.push_back(best + 0.5 * (it->second - best));
     }
