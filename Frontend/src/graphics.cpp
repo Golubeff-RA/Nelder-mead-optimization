@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "implot.h"
 
 #include <regex>
 
@@ -60,6 +61,25 @@ void AppUI::showOutputWindow() {
         }
     ImGui::Text("%s\n%s %lf", stringRes::answer_string, stringRes::measure_string, _answer);
     ImGui::End();
+
+    float* generations = new float[_logs.size()];
+    float* functionValues = new float[_logs.size()];
+    size_t idx = 0;
+    for (const Log& log : _logs) {
+        generations[idx] = static_cast<float>(idx + 1);
+        functionValues[idx] = static_cast<float>(log.func_val);
+        idx++;
+    }
+
+    ImGui::Begin(stringRes::graphic_window_string);
+    if (ImPlot::BeginPlot(stringRes::function_graphic_string, ImVec2(-1, -1))) {
+        ImPlot::PlotLine(stringRes::q_from_X_string, generations, functionValues, _logs.size());
+        ImPlot::EndPlot();
+    }
+    ImGui::End();
+
+    delete[] generations;
+    delete[] functionValues;
 }
 
 void AppUI::showSettingsWindow() {
@@ -100,7 +120,7 @@ void AppUI::printPoint(const Point& point) {
             ImGui::SameLine();
         }
     }
-    
+
     ImGui::Text(")");
 }
 
@@ -122,6 +142,7 @@ bool AppUI::isExpressionCorrect(std::string expression) {
 
 void AppUI::readFunction() {
     _printDefault = true;
+    ImPlot::DestroyContext();
     _optimizeFunction = false;
     _showSettings = false;
     strcpy(_readedFunction, _inputFunction);
@@ -160,8 +181,10 @@ void AppUI::optimizeFunction() {
             _solver.epoch() = _iterations;
             _answer = _solver.Optimize(_inputFunction, _startPoint);
             _logs = _solver.GetLogs(_inputFunction);
+            ImPlot::CreateContext();
             _optimizeFunction = true;
         } catch (const std::runtime_error& e) {
+            ImPlot::DestroyContext();
             _optimizeFunction = false;
             std::cerr << e.what() << '\n';
             std::ostringstream errorStr;
@@ -180,6 +203,7 @@ void AppUI::clearFunction() {
     strcpy(_readedFunction, "");
     strcpy(_inputFunction, "");
     _printFunction = false;
+    ImPlot::DestroyContext();
     _optimizeFunction = false;
     _printDefault = false;
     _showSettings = false;

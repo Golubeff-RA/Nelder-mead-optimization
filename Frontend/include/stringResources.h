@@ -22,4 +22,7 @@ extern const char optimize_button_string[];
 extern const char settings_button_string[];
 extern const char show_logs_checkbox[];
 extern const char start_point_string[];
+extern const char graphic_window_string[];
+extern const char function_graphic_string[];
+extern const char q_from_X_string[];
 }  // namespace stringRes
