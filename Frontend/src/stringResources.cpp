@@ -22,4 +22,7 @@ const char optimize_button_string[] = "Optimize";
 const char settings_button_string[] = "Settings";
 const char show_logs_checkbox[] = "Show logs";
 const char start_point_string[] = "Start point";
+const char graphic_window_string[] = "Graphic window";
+const char function_graphic_string[] = "Function value graphic";
+const char q_from_X_string[] = "Q(X)";
 }  // namespace stringRes
