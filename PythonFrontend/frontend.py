@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import re
 
-def optimize(iterations, tolerance, function, point, log_file_path):
+def optimize(iterations, tolerance, function, point, log_file_path="opt.log"):
     """
     Вызывает бинарный файл с аргументами, строит графики из лог-файла.
 
@@ -24,7 +24,7 @@ def optimize(iterations, tolerance, function, point, log_file_path):
         point_string = ' '.join(map(str, point_coords))
     except ValueError:
         print("Ошибка: Некорректный формат координат.")
-        return
+        return "Error", "Error", "Error", "Error"
 
     binary_path = "build/NelderMeadSolver/NelderMeadSolver"
 
@@ -38,33 +38,41 @@ def optimize(iterations, tolerance, function, point, log_file_path):
     ]
 
     try:
-        result = subprocess.run(command, capture_output=True, text=True, check=True)
-        print("Вывод бинарника:", result.stdout)
+        subprocess.run(command, capture_output=True, text=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Ошибка при запуске: {e.stderr}")
-        return
+        return "Error", "Error", "Error", "Error"
     except FileNotFoundError:
         print(f"Ошибка: Бинарный файл не найден по пути {binary_path}")
-        return
+        return "Error", "Error", "Error", "Error"
 
     function_values = []
     volumes = []
+    min_q_x = None
+    argmin = None
 
     try:
         with open(log_file_path, 'r') as f:
             for line in f:
-                match = re.match(r"([-\d\.]+)\s+([\d\.]+)\s+\{\(.*?\)\}", line)
+                last_line = line
+                match = re.match(r"([-\d\.]+)\s+([\d\.]+)\s+\{\(([\d., -]+)\).*?\}.*", line)
                 if match:
                     function_value = float(match.group(1)) 
                     volume = float(match.group(2))
                     function_values.append(function_value)
                     volumes.append(volume)
+            if last_line:
+                match = re.match(r"([-\d\.]+)\s+([\d\.]+)\s+\{\(([\d., -]+)\).*?\}.*", last_line)
+                if match:
+                    min_q_x = float(match.group(1))
+                    argmin = match.group(3)
+
     except FileNotFoundError:
         print("Ошибка: Файл логов не найден.")
-        return
+        return "Error", "Error", "Error", "Error"
     except ValueError:
         print("Ошибка: Некорректный формат данных в файле логов.")
-        return
+        return "Error", "Error", "Error", "Error"
 
     fig_function, ax_function = plt.subplots()
     ax_function.plot(function_values)
@@ -86,7 +94,7 @@ def optimize(iterations, tolerance, function, point, log_file_path):
     fig_volume.savefig(volume_plot_path)
     plt.close(fig_volume)
 
-    return function_plot_path, volume_plot_path
+    return function_plot_path, volume_plot_path, str(min_q_x), str(argmin)
 
 
 if __name__ == "__main__":
@@ -95,16 +103,19 @@ if __name__ == "__main__":
         iterations_input = gr.Number(label="Число итераций", value=100)
         tolerance_input = gr.Number(label="Погрешность", value=0.001)
         point_input = gr.Textbox(lines=1, label="Координаты начальной точки (через запятую)", placeholder="Например, 1.0, 2.5, -0.3")
-        log_file_path_input = gr.Textbox(label="Путь к файлу логов", value="optimization.log")
+        #log_file_path_input = gr.Textbox(label="Путь к файлу логов", value="optimization.log")
         optimize_button = gr.Button("Оптимизировать")
 
+        min_q_x = gr.Textbox(label="Min Q(X)")
+        point_c = gr.Textbox(label="argmin(Q(X))")
         function_plot_output = gr.Image(label="График значения функции")
         volume_plot_output = gr.Image(label="График меры")
+        
 
         optimize_button.click(
             fn=optimize,
-            inputs=[iterations_input, tolerance_input, function_input, point_input, log_file_path_input],
-            outputs=[function_plot_output, volume_plot_output],
+            inputs=[iterations_input, tolerance_input, function_input, point_input],
+            outputs=[function_plot_output, volume_plot_output, min_q_x, point_c],
         )
 
-    iface.launch()
+    iface.launch(share=True)

@@ -2,3 +2,7 @@
 build
 .vs
 myenv
+.gradio
+function_plot.png
+opt.log
+volume_plot.png

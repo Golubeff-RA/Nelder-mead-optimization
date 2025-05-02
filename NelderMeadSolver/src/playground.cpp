@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <regex>
 #include <vector>
@@ -6,29 +7,28 @@
 #include "point.h"
 #include "solver.h"
 
-std::vector<std::string> Split(const std::string& string,
-    const std::string& delimiter = " ") {
-std::vector<std::string> out;
+std::vector<std::string> Split(const std::string& string, const std::string& delimiter = " ") {
+    std::vector<std::string> out;
 
-if (string.empty()) {
-return out;
-}
+    if (string.empty()) {
+        return out;
+    }
 
-size_t lastpos1 = 0;
-while (string.find(delimiter, lastpos1) != std::string::npos) {
-size_t lastpos2 = string.find(delimiter, lastpos1);
-out.push_back(string.substr(lastpos1, lastpos2 - lastpos1));
-lastpos1 = lastpos2 + delimiter.size();
-}
-out.push_back(string.substr(lastpos1, string.size() - lastpos1));
+    size_t lastpos1 = 0;
+    while (string.find(delimiter, lastpos1) != std::string::npos) {
+        size_t lastpos2 = string.find(delimiter, lastpos1);
+        out.push_back(string.substr(lastpos1, lastpos2 - lastpos1));
+        lastpos1 = lastpos2 + delimiter.size();
+    }
+    out.push_back(string.substr(lastpos1, string.size() - lastpos1));
 
-return out;
+    return out;
 }
 
 void PrintPoint(const Point& p, std::ostream& out) {
     out << "(";
     for (size_t idx = 0; idx < p.Size(); ++idx) {
-        out << p[idx];
+        out << std::fixed << p[idx];
         if (idx != p.Size() - 1) {
             out << ", ";
         }
@@ -37,7 +37,7 @@ void PrintPoint(const Point& p, std::ostream& out) {
 }
 
 void WriteLog(const Log& log, std::ostream& out) {
-    out << log.func_val << " " << log.measure << " {";
+    out << std::fixed << log.func_val << " " << std::fixed << log.measure << " {";
     for (const auto& point : log.points) {
         PrintPoint(point, out);
     }

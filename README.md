@@ -117,3 +117,5 @@ private:
     void GlobalShrink_(Function& func, std::multimap<double, Point>& simplex);
 };
 ```
+# UML-диаграмма
+<img src="UMLDiagram.svg">
