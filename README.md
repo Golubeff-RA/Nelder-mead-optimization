@@ -117,3 +117,125 @@ private:
     void GlobalShrink_(Function& func, std::multimap<double, Point>& simplex);
 };
 ```
+# UML-диаграмма 
+@startuml
+class Point {
+  - data_: std::vector<double>
+  + Point(dimensions: size_t)
+  + Point(data: const std::vector<double>&)
+  + Point(data: std::initializer_list<double>&&)
+  + Point(other: const Point&)
+  + Point(other: Point&&)
+  + operator=(other: const Point&): Point&
+  + operator=(other: Point&&): Point&
+  + ~Point()
+  + Size(): size_t
+  + operator[](idx: size_t) const: double
+  + operator[](idx: size_t): double&
+  + operator+=(other: const Point&): Point&
+  + operator-=(other: const Point&): Point&
+  + operator*=(coef: double): Point&
+  + operator+(left: const Point&, right: const Point&): Point
+  + operator-(left: const Point&, right: const Point&): Point
+  + operator*(point: const Point&, coef: double): Point
+  + operator*(coef: double, point: const Point&): Point
+}
+
+class Log {
+  + points: std::vector<Point>
+  + measure: double
+  + func_val: double
+}
+
+class Function {
+    - expression_: std::string
+    - vecOperand_: std::vector<std::string>
+    + Function(expression: std::string)
+    + Calculate(point: Point&): double
+}
+
+class NelderMeadSolver {
+  - eps_: double
+  - epoch_: size_t
+  - optimized_functions_: std::map<std::string, std::list<Log>>
+  - expan_coef_: const double
+  - shrnk_coef_: const double
+  - refle_coef_: const double
+  - update_simplex_: const size_t
+  + NelderMeadSolver(eps: double = 10e-5, epoch: size_t = 100)
+  + Optimize(function: const std::string&, start_point: const Point&): double
+  + CountDim(function: const std::string&): size_t
+  + GetLogs(function: const std::string&): std::list<Log>
+  + eps() const: double
+  + eps(): double&
+  + epoch() const: size_t
+  + epoch(): size_t&
+  - CalcCenter_(simplex: const std::multimap<double, Point>&): Point
+  - GenerateSimplex_(dim: size_t, start_point: Point, func: Function&): std::multimap<double, Point>
+  - SimplexToVector_(simplex: const std::multimap<double, Point>&): std::vector<Point>
+  - LocalShrink_(func: Function&, simplex: std::multimap<double, Point>&, center: const Point&): void
+  - GlobalShrink_(func: Function&, simplex: std::multimap<double, Point>&): void
+}
+
+class AppUI {
+  -_solver: NelderMeadSolver
+  -_readedFunction: char[128]
+  -_inputFunction: char[128]
+  -_defaultString: char*
+  -_startPoint: Point
+  -_logs: std::list<Log>
+  -_printFunction: bool
+  -_optimizeFunction: bool
+  -_printDefault: bool
+  -_showSettings: bool
+  -_showLogs: bool
+  -_answer: double
+  -_error: float
+  -_iterations: int
+  -_dimensions: size_t
+
+  +AppUI(defaultString: char*)
+  +AppUI()
+  +~AppUI()
+  +initFrame():void
+  +showIputWindow():void
+  +showOutputWindow():void
+  +showSettingsWindow():void
+  +isExpressionCorrect(expression: std::string): bool
+  -printPoint(point: const Point&): void
+  -readFunction(): void
+  -optimizeFunction(): void
+  -clearFunction(): void
+}
+
+NelderMeadSolver "1" -- "0..*" Log : contains
+NelderMeadSolver "1" -- "1" Function : uses
+NelderMeadSolver "1" -- "1..*" Point : uses
+Function "1" -- "1" Point : uses
+AppUI "1" -- "1" NelderMeadSolver: uses
+AppUI "1" -- "1" Point: uses
+AppUI "1" -- "0..*" Log: uses
+
+note right of Log::points
+    Vector of points in simplex
+end note
+
+note right of Point::data_
+    Stores the coordinates of the point
+end note
+note right of NelderMeadSolver::optimized_functions_
+    Store logs for each function that has been optimized
+end note
+
+note right of NelderMeadSolver
+    Class for finding the minimum of a function using the Nelder-Mead method.
+end note
+
+note right of AppUI
+    Class for UI interaction, optimization, and logs handling
+end note
+
+note right of Function
+    Class for expression calculation
+end note
+@enduml
