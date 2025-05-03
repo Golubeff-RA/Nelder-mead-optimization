@@ -44,15 +44,15 @@ double PostStringCalculater::Calculate(Point& point) {
             std::vector<double> vecNumber;
             switch (GetTypeOperation(operand)) {
                 case BIN:
-                    if (stack_.size() < 2) {
+                    if (stack_.size() < 1) {
                         throw std::runtime_error("Incorrect expression\n");
                     }
                     vecNumber.push_back(stack_.top());
                     stack_.pop();
-                    vecNumber.push_back(stack_.top());
-                    stack_.pop();
-                    stack_.push(Calc(operand, vecNumber));
-                    break;
+                    if (GetNameOperation(operand) == MINUS && (stack_.size() == 0 || IsOperation(stack_.top()))) {
+                        stack_.push(Calc(operand, vecNumber));
+                        break;
+                    }
                 case UNO:
                     if (stack_.size() < 1) {
                         throw std::runtime_error("Incorrect expression\n");

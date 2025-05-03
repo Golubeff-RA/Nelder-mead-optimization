@@ -14,6 +14,10 @@ int GetTypeOperation(std::string operand) {
     return operationMap_[operand].typeOperation_;
 }
 
+int GetNameOperation(std::string operand){
+    return operationMap_[operand].name_;
+}
+
 bool CheckOperandsMore(std::string operand1, std::string operand2) {
     return operationMap_[operand1].priority_ >= operationMap_[operand2].priority_;
 }
@@ -31,7 +35,15 @@ double Calc(std::string operation, std::vector<double>& vecNumber) {
         case PLUS:
             return vecNumber[1] + vecNumber[0];
         case MINUS:
-            return vecNumber[1] - vecNumber[0];
+            switch (vecNumber.size())
+            {
+            case 1:
+                return -vecNumber[0];
+            case 2:
+                return vecNumber[1] - vecNumber[0];
+            default:
+                throw std::runtime_error("incorect expression");
+            }
         case MULT:
             return vecNumber[1] * vecNumber[0];
         case DIVIDER:
