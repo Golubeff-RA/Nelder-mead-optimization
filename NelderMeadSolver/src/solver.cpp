@@ -26,9 +26,9 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
             // лучшее значение функции
             double f_l = simplex.begin()->first;  
             // второе по лучшести
-            double f_h = std::prev(simplex.end())->first;  
-            // самое плохое значение функции
             double f_g = std::next(simplex.begin())->first;  
+            // самое плохое значение функции
+            double f_h = std::prev(simplex.end())->first;  
 
             // Q(X) в отраженной точке лучше лучшего значения
             if (f_r < f_l) {
@@ -44,20 +44,20 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
             }
 
             // Q(X) в отраженной точке между 2-мя лучшими значениями
-            if (f_l < f_r && f_r < f_g) {
+            if (f_l <= f_r && f_r < f_g) {
                 simplex.insert({f_r, reflected});
                 simplex.erase(std::prev(simplex.end()));
                 continue;
             }
 
-            if (f_g < f_r && f_r < f_h) {
+            if (f_g <= f_r && f_r < f_h) {
                 simplex.insert({f_r, reflected});
                 simplex.erase(std::prev(simplex.end()));
                 LocalShrink_(func, simplex, center);
                 continue;
             }
 
-            if (f_h < f_r) {
+            if (f_h <= f_r) {
                 LocalShrink_(func, simplex, center);
                 continue;
             }
