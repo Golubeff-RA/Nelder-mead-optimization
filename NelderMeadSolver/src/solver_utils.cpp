@@ -8,18 +8,25 @@ size_t NelderMeadSolver::CountDim(const std::string& function) {
         if (function[idx] == 'x') {
             ++idx;
             std::string num{};
-            while (function[idx] >= '0' && function[idx] <= '9' && idx < function.size()) {
+            while (idx < function.size() && function[idx] >= '0' && function[idx] <= '9') {
                 num.push_back(function[idx]);
                 ++idx;
             }
-            vars.insert(std::stoull(num));
+            if(num.size() > 0) {
+                vars.insert(std::stoull(num));
+            } else {
+                throw std::runtime_error("invalid variable name");
+            }
         }
         ++idx;
     }
 
-    // неверная нумерация переменных
+    //not have vars in expression
+    if (vars.size() == 0) {
+        return 0; 
+    }
     if (*(std::prev(vars.end())) != vars.size()) {
-        throw std::runtime_error("Wrong var numerization!");
+        throw std::runtime_error("Wrong variable numerization!");
     }
     return *(std::prev(vars.end()));
 }
@@ -64,8 +71,8 @@ void NelderMeadSolver::LocalShrink_(Function& func, std::multimap<double, Point>
     Point shrinked = shrnk_coef_ * worst + (1 - shrnk_coef_) * center;
     double f_s = func.Calculate(shrinked);
     if (f_s < f_h) {
-        simplex.insert({f_s, shrinked});
         simplex.erase(std::prev(simplex.end()));
+        simplex.insert({f_s, shrinked});
     } else {
         GlobalShrink_(func, simplex);
     }
@@ -75,9 +82,8 @@ void NelderMeadSolver::GlobalShrink_(Function& func, std::multimap<double, Point
     Point best{simplex.begin()->second};
     std::vector<Point> shrinked;
     shrinked.reserve(simplex.size());
-    shrinked.push_back(best);
-    std::cout << "Global shrink";
-    for (auto it = std::next(simplex.begin()); it != simplex.end(); ++it) {
+    //std::cout << "Global shrink";
+    for (auto it = simplex.begin(); it != simplex.end(); ++it) {
         shrinked.push_back(best + 0.5 * (it->second - best));
     }
 
