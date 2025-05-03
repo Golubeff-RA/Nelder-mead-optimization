@@ -4,6 +4,8 @@
 
 int GetTypeOperation(std::string operand);
 
+int GetNameOperation(std::string operand);
+
 bool CheckOperandsMore(std::string operand1, std::string operand2);
 
 bool IsOperation(std::string operand);
