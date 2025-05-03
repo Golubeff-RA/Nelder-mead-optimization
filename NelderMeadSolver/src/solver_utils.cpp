@@ -82,7 +82,7 @@ void NelderMeadSolver::GlobalShrink_(Function& func, std::multimap<double, Point
     Point best{simplex.begin()->second};
     std::vector<Point> shrinked;
     shrinked.reserve(simplex.size());
-    std::cout << "Global shrink";
+    //std::cout << "Global shrink";
     for (auto it = simplex.begin(); it != simplex.end(); ++it) {
         shrinked.push_back(best + 0.5 * (it->second - best));
     }

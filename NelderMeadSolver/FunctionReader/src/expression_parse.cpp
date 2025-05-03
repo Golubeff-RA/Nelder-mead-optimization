@@ -30,16 +30,16 @@ std::vector<std::string> expression_parser::GetPraseExpression() {
 
 bool expression_parser::IsNeedSeparate(char symbol) {
     bool flag = false;
-    flag |= symbol == ' ' || symbol == '(' || symbol == ')';
+    flag |= symbol == ' ' || symbol == '(' || symbol == ')' || IsOperation(symbol);
     // recognize -3, -5, -x
-    if (IsOperation(symbol)) {
+    /*if (IsOperation(symbol)) {
         if (symbol == '-') {
             flag |= !(vecExpression_.size() == 0 ||
                       (IsOperation(vecExpression_.back()) || vecExpression_.back() == "(" ||
                        vecExpression_.back() == ")"));
         } else
             flag |= true;
-    }
+    }*/
     return flag;
 }
 
