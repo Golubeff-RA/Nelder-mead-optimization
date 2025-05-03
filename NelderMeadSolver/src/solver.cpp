@@ -15,7 +15,7 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
         while (counter < update_simplex_ && measure > eps_) {
             ++counter;
             auto vec_simplex = SimplexToVector_(simplex);
-            measure = Measure(vec_simplex);
+            //measure = Measure(vec_simplex);
             current_optimization.push_back(Log{vec_simplex, measure, simplex.begin()->first});
 
             Point worst{std::prev(simplex.end())->second};
