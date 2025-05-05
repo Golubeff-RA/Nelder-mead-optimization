@@ -1,7 +1,19 @@
 #include "point.h"
 #include <cmath>
 
-double Measure(const std::vector<Point>& simplex) {
+double Point::Length(const Point& left, const Point& right) {
+    if (left.Size() != right.Size()) {
+        return 0;
+    }
+    double sum = 0;
+    for (size_t idx = 0; idx < left.Size(); ++idx) {
+        sum += std::pow((left[idx] - right[idx]), 2);
+    }
+
+    return std::sqrt(sum);
+}
+
+double LongMeasure(const std::vector<Point>& simplex) {
     if (!CheckDimensions(simplex)) {
         return -1;
     }
@@ -17,6 +29,16 @@ double Measure(const std::vector<Point>& simplex) {
     }
 
     return std::abs(Determinant(matrix)) / Factorial(matrix.size());
+}
+
+double Measure(const std::multimap<double, Point>& simplex) {
+    double avg_len = 0;
+    const Point& start = simplex.begin()->second;
+    for (const auto& point_pair : simplex) {
+        avg_len += Point::Length(start, point_pair.second);
+    }
+
+    return avg_len / (simplex.size() - 1);
 }
 
 bool CheckDimensions(const std::vector<Point>& simplex) {

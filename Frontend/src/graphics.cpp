@@ -1,7 +1,8 @@
 #include "graphics.h"
-#include "implot.h"
 
 #include <regex>
+
+#include "implot.h"
 
 AppUI::AppUI(char* defaultString) : _defaultString{defaultString} {
 }
@@ -21,7 +22,7 @@ void AppUI::initFrame() {
 }
 
 void AppUI::showIputWindow() {
-    ImGui::Begin(stringRes::input_window_string);
+    ImGui::Begin(stringRes::input_window_string, nullptr, ImGuiWindowFlags_NoMove);
 
     ImGui::Text("%s", stringRes::measure_string);
     ImGui::SameLine();
@@ -39,9 +40,6 @@ void AppUI::showIputWindow() {
     if (_printFunction)
         optimizeFunction();
 
-    if (_showSettings)
-        showSettingsWindow();
-
     if (_optimizeFunction)
         showOutputWindow();
 
@@ -49,7 +47,7 @@ void AppUI::showIputWindow() {
 }
 
 void AppUI::showOutputWindow() {
-    ImGui::Begin(stringRes::output_window_string);
+    ImGui::Begin(stringRes::output_window_string, nullptr, ImGuiWindowFlags_NoMove);
     int index = 1;
     if (_showLogs)
         for (Log log : _logs) {
@@ -71,7 +69,7 @@ void AppUI::showOutputWindow() {
         idx++;
     }
 
-    ImGui::Begin(stringRes::graphic_window_string);
+    ImGui::Begin(stringRes::graphic_window_string, nullptr, ImGuiWindowFlags_NoMove);
     if (ImPlot::BeginPlot(stringRes::function_graphic_string, ImVec2(-1, -1))) {
         ImPlot::PlotLine(stringRes::q_from_X_string, generations, functionValues, _logs.size());
         ImPlot::EndPlot();
@@ -83,7 +81,7 @@ void AppUI::showOutputWindow() {
 }
 
 void AppUI::showSettingsWindow() {
-    ImGui::Begin(stringRes::settings_window_string);
+    ImGui::Begin(stringRes::settings_window_string, nullptr, ImGuiWindowFlags_NoMove);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 250);
     ImGui::InputFloat(stringRes::solving_error_string, &_error);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 15);
@@ -93,19 +91,16 @@ void AppUI::showSettingsWindow() {
     ImGui::InputInt(stringRes::max_iterations_string, &_iterations);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 15);
     ImGui::SliderInt("##mi", &_iterations, 0, 1000);
-
     for (size_t i = 0; i < _dimensions; i++) {
         ImGui::SetNextItemWidth(150);
-        std::string id = "##" + std::to_string(i);
-        ImGui::InputDouble(id.c_str(), &(_startPoint[i]));
-        ImGui::SameLine();
+        ImGui::InputDouble(std::string("#" + std::to_string(i + 1)).c_str(), &(_startPoint[i]));
+        if ((i + 1) % 4 != 0) {
+            ImGui::SameLine();
+        }
     }
     ImGui::Text("%s", stringRes::start_point_string);
-
     ImGui::Text("%s %f", stringRes::saved_error_string, _error);
     ImGui::Text("%s %d", stringRes::saved_iterations_string, _iterations);
-    if (ImGui::Button(stringRes::close_button_string))
-        _showSettings = false;
     ImGui::End();
 }
 
@@ -144,33 +139,25 @@ void AppUI::readFunction() {
     _printDefault = true;
     ImPlot::DestroyContext();
     _optimizeFunction = false;
-    _showSettings = false;
     strcpy(_readedFunction, _inputFunction);
     std::cout << isExpressionCorrect(_inputFunction);
     if (isExpressionCorrect(_inputFunction)) {
-        std::cout << isExpressionCorrect(_inputFunction);
-        if (isExpressionCorrect(_inputFunction)) {
-            try {
-                Function func(_inputFunction);
-                _printFunction = true;
-                _dimensions = _solver.CountDim(_inputFunction);
-                // if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
-                // if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
-                std::vector<double> p;
-                for (size_t i = 0; i < _dimensions; i++)
-                    p.push_back(0);
-                _startPoint = Point{p};
-            } catch (const std::runtime_error& e) {
-                std::cerr << e.what() << '\n';
-                _printFunction = false;
-                std::ostringstream errorStr;
-                errorStr << stringRes::invalid_input_string << e.what();
-                strcpy(_readedFunction, errorStr.str().c_str());
-            }
-        } else {
+        try {
+            Function func(_inputFunction);
+            _printFunction = true;
+            _dimensions = _solver.CountDim(_inputFunction);
+            _startPoint = Point(_dimensions);
+
+        } catch (const std::runtime_error& e) {
+            std::cerr << e.what() << '\n';
             _printFunction = false;
-            strcpy(_readedFunction, "invalid expression");
+            std::ostringstream errorStr;
+            errorStr << stringRes::invalid_input_string << e.what();
+            strcpy(_readedFunction, errorStr.str().c_str());
         }
+    } else {
+        _printFunction = false;
+        strcpy(_readedFunction, "invalid expression");
     }
 }
 
@@ -193,9 +180,6 @@ void AppUI::optimizeFunction() {
         }
     }
     ImGui::SameLine();
-    if (ImGui::Button(stringRes::settings_button_string))
-        _showSettings = true;
-    ImGui::SameLine();
     ImGui::Checkbox(stringRes::show_logs_checkbox, &_showLogs);
 }
 
@@ -206,6 +190,5 @@ void AppUI::clearFunction() {
     ImPlot::DestroyContext();
     _optimizeFunction = false;
     _printDefault = false;
-    _showSettings = false;
     _logs.clear();
 }

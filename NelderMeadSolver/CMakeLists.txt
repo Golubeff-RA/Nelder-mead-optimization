@@ -3,23 +3,12 @@ project(NelderMeadSolver)
 
 add_subdirectory(FunctionReader)
 
-add_library(point SHARED
-    ${POINT_DIR}/src/constructors.cpp
-    ${POINT_DIR}/src/operators.cpp
-    ${POINT_DIR}/src/measure.cpp
-    )
-
-enable_testing()
-
 add_library(solver SHARED
-    ${POINT_DIR}/src/constructors.cpp
-    ${POINT_DIR}/src/operators.cpp
-    ${POINT_DIR}/src/measure.cpp
     ${SOLVER_DIR}/src/solver.cpp
     ${SOLVER_DIR}/src/solver_utils.cpp
 )
 
-target_link_libraries(solver PUBLIC point function_parser)
+target_link_libraries(solver PUBLIC function_parser)
 
 add_executable(${PROJECT_NAME} 
     src/playground.cpp 

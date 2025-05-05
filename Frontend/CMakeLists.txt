@@ -3,7 +3,6 @@ project(FrontendImGui)
 
 set(CMAKE_CXX_STANDARD 17)
 
-
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
@@ -42,9 +41,7 @@ add_library(app STATIC
 add_executable(${PROJECT_NAME} src/main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE app imgui glfw ${OPENGL_LIBRARIES} GL dl solver)
-    
 
-# Укажите флаги компиляции для ImGui (если необходимо)
 target_compile_definitions(imgui PUBLIC
-    IMGUI_IMPL_OPENGL_LOADER_GLAD # Или другая библиотека загрузки OpenGL, если вы ее используете
+    IMGUI_IMPL_OPENGL_LOADER_GLAD
 )

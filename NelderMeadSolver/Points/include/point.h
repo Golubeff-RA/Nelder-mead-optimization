@@ -1,4 +1,6 @@
 #pragma once
+
+#include <map>
 #include <vector>
 #include <initializer_list>
 
@@ -35,13 +37,14 @@ public:
 
     friend Point operator*(double coef, const Point& point);
 
-
+    static double Length(const Point& left, const Point& right);
 private:
     std::vector<double> data_;
 };
 
 // вычисляет меру симплекса с помощью определителя матрицы
-double Measure(const std::vector<Point>& simplex);
+double LongMeasure(const std::vector<Point>& simplex);
+double Measure(const std::multimap<double, Point>& simplex);
 bool CheckDimensions(const std::vector<Point>& simplex);
 double Factorial (size_t n);
 double Determinant(const std::vector<std::vector<double>>& matrix);
