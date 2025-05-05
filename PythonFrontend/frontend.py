@@ -41,10 +41,10 @@ def optimize(iterations, tolerance, function, point, log_file_path="opt.log"):
         subprocess.run(command, capture_output=True, text=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Ошибка при запуске: {e.stderr}")
-        return "Error", "Error", "Error", "Error"
+        return "Error", "Error", "Ошибка при запуске скрипта", "Error"
     except FileNotFoundError:
         print(f"Ошибка: Бинарный файл не найден по пути {binary_path}")
-        return "Error", "Error", "Error", "Error"
+        return "Error", "Error", "Файл скрипта найден по пути", "Error"
 
     function_values = []
     volumes = []
@@ -69,10 +69,10 @@ def optimize(iterations, tolerance, function, point, log_file_path="opt.log"):
 
     except FileNotFoundError:
         print("Ошибка: Файл логов не найден.")
-        return "Error", "Error", "Error", "Error"
+        return "Error", "Error", "Файл логов не найден", "Error"
     except ValueError:
         print("Ошибка: Некорректный формат данных в файле логов.")
-        return "Error", "Error", "Error", "Error"
+        return "Error", "Error", "Некорректный формат данных в файле логов", "Error"
 
     fig_function, ax_function = plt.subplots()
     ax_function.plot(function_values)
