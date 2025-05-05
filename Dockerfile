@@ -3,6 +3,7 @@ FROM debian:latest
 # Устанавливаем необходимые пакеты
 RUN apt-get update && \
     apt-get install -y \
+    build-essential \
     g++ \
     cmake \
     make \
@@ -25,7 +26,7 @@ COPY . .
 # Создаем директорию для сборки и собираем проект
 RUN mkdir build && \
     cd build && \
-    cmake .. && \
-    make -j NelderMeadSolver
+    cmake ../ && \
+    make -j
 
 CMD ["python3", "/app/PythonFrontend/frontend.py"]

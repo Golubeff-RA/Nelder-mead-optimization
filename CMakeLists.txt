@@ -10,7 +10,7 @@ set(SOLVER_DIR ${CMAKE_SOURCE_DIR}/NelderMeadSolver)
 set(POINT_DIR ${SOLVER_DIR}/Points)
 set(FUNCTION_DIR ${SOLVER_DIR}/FunctionReader)
 set(FRONTEND_DIR ${CMAKE_SOURCE_DIR}/Frontend)
-set(FONT_PATH "${IMGUI_DIR}/misc/fonts/DroidSans.ttf")
+set(FONT_PATH ${CMAKE_SOURCE_DIR}/Frontend/imgui/misc/fonts/DroidSans.ttf)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -Wsign-compare")
 
