@@ -148,29 +148,21 @@ void AppUI::readFunction() {
     strcpy(_readedFunction, _inputFunction);
     std::cout << isExpressionCorrect(_inputFunction);
     if (isExpressionCorrect(_inputFunction)) {
-        std::cout << isExpressionCorrect(_inputFunction);
-        if (isExpressionCorrect(_inputFunction)) {
-            try {
-                Function func(_inputFunction);
-                _printFunction = true;
-                _dimensions = _solver.CountDim(_inputFunction);
-                // if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
-                // if (vars.empty() || *(std::prev(vars.end())) != vars.size()) {
-                std::vector<double> p;
-                for (size_t i = 0; i < _dimensions; i++)
-                    p.push_back(0);
-                _startPoint = Point{p};
-            } catch (const std::runtime_error& e) {
-                std::cerr << e.what() << '\n';
-                _printFunction = false;
-                std::ostringstream errorStr;
-                errorStr << stringRes::invalid_input_string << e.what();
-                strcpy(_readedFunction, errorStr.str().c_str());
-            }
-        } else {
+        try {
+            Function func(_inputFunction);
+            _printFunction = true;
+            _startPoint = Point(_solver.CountDim(_inputFunction));
+            
+        } catch (const std::runtime_error& e) {
+            std::cerr << e.what() << '\n';
             _printFunction = false;
-            strcpy(_readedFunction, "invalid expression");
+            std::ostringstream errorStr;
+            errorStr << stringRes::invalid_input_string << e.what();
+            strcpy(_readedFunction, errorStr.str().c_str());
         }
+    } else {
+        _printFunction = false;
+        strcpy(_readedFunction, "invalid expression");
     }
 }
 
