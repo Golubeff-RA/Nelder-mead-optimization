@@ -4,7 +4,7 @@ namespace stringRes {
 const char* read_function_string = "Function readed:";
 const char* invalid_input_string = "invalid input\nError: ";
 const char* measure_string = "Q(X) = ";
-const char* input_function_string = "";
+const char* input_function_string = "##";
 const char* read_button_string = "Read";
 const char* clear_button_string = "Clear";
 const char* input_window_string = "Input Q(X)";
