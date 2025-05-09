@@ -121,10 +121,12 @@ TEST(Math, Determinant) {
 
 
 TEST(Math, Measure_2dim) {
-    vector<Point> simplex1{{0, 0}, {0, 1}, {1, 0}};
+    // в конструкторе не vector
+    /*vector<Point> simplex1{{0, 0}, {0, 1}, {1, 0}};
     vector<Point> simplex2{{0, 0}, {0, 4}, {4, 0}};
     EXPECT_EQ(Measure(simplex1), 1.0 / 2.0);
-    EXPECT_EQ(Measure(simplex2), 8.0);
+    EXPECT_EQ(Measure(simplex2), 8.0);*/
+    EXPECT_EQ(1, 2);
 
 }
 int main(int argc, char **argv) {

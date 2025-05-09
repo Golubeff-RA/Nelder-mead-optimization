@@ -51,6 +51,7 @@ void WriteLog(const Log& log, std::ostream& out) {
 // 4 - путь до файла логов
 // 5 - стартовая точка
 int main(int argc, char* argv[]) {
+    std::cout << "Ready";
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];  // Преобразование char* в std::string
         std::cout << "Аргумент " << i << ": " << arg << std::endl;

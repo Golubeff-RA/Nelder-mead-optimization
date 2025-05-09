@@ -6,7 +6,7 @@
 
 class Point {
 public:
-    Point(size_t dimensions);
+    Point(std::size_t dimensions);
     Point(const std::vector<double>& data);
     Point(std::initializer_list<double>&& data);
     // rule of 5 realisation //
@@ -18,10 +18,10 @@ public:
     ~Point();
     // ... //
 
-    size_t Size() const;
-    double operator[](size_t idx) const;
+    std::size_t Size() const;
+    double operator[](std::size_t idx) const;
 
-    double& operator[](size_t idx);
+    double& operator[](std::size_t idx);
 
     Point& operator+=(const Point& other);
 
@@ -46,5 +46,5 @@ private:
 double LongMeasure(const std::vector<Point>& simplex);
 double Measure(const std::multimap<double, Point>& simplex);
 bool CheckDimensions(const std::vector<Point>& simplex);
-double Factorial (size_t n);
+double Factorial (std::size_t n);
 double Determinant(const std::vector<std::vector<double>>& matrix);
