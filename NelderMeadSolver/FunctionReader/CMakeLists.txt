@@ -32,4 +32,4 @@ add_library(function_parser SHARED
 
 add_executable(${PROJECT_NAME} src/StringDecode.cpp ${FUNC_PARSER})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC point) #${POINT_LIB})
+target_link_libraries(${PROJECT_NAME} PUBLIC point)

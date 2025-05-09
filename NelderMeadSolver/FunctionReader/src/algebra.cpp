@@ -42,7 +42,7 @@ double Calc(std::string operation, std::vector<double>& vecNumber) {
             case 2:
                 return vecNumber[1] - vecNumber[0];
             default:
-                throw std::runtime_error("incorect expression");
+                throw std::runtime_error("Incorect expression");
             }
         case MULT:
             return vecNumber[1] * vecNumber[0];

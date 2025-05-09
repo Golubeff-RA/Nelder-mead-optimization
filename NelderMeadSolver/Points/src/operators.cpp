@@ -1,20 +1,20 @@
 #include "point.h"
 
-size_t Point::Size() const {
+std::size_t Point::Size() const {
     return data_.size();
 }
 
-double Point::operator[](size_t idx) const {
+double Point::operator[](std::size_t idx) const {
     return data_[idx];
 }
 
-double& Point::operator[](size_t idx) {
+double& Point::operator[](std::size_t idx) {
     return data_[idx];
 }
 
 Point& Point::operator+=(const Point& other) {
     if (Size() == other.Size()) {
-        for (size_t idx = 0; idx < Size(); ++idx) {
+        for (std::size_t idx = 0; idx < Size(); ++idx) {
             (*this)[idx] += other[idx];
         }
     }
@@ -24,7 +24,7 @@ Point& Point::operator+=(const Point& other) {
 
 Point& Point::operator-=(const Point& other) {
     if (Size() == other.Size()) {
-        for (size_t idx = 0; idx < Size(); ++idx) {
+        for (std::size_t idx = 0; idx < Size(); ++idx) {
             (*this)[idx] -= other[idx];
         }
     }
