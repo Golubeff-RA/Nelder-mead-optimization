@@ -10,7 +10,7 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
     size_t dim_size = CountDim(function);
     Function func{function};
     auto simplex{GenerateSimplex_(dim_size, start_point, func)};
-    for (size_t i = 0; i < std::max(1ul, epoch_ / update_simplex_); ++i) {
+    for (size_t i = 0; i < std::max((size_t)1ul, epoch_ / update_simplex_); ++i) {
         size_t counter = 0;
         while (counter < update_simplex_ && measure > eps_) {
             ++counter;

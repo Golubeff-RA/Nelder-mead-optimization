@@ -1,6 +1,6 @@
 #include "point.h"
 
-Point::Point(size_t dimensions) {
+Point::Point(std::size_t dimensions) {
     data_ = std::vector<double>(dimensions, 0.0);
 }
 
