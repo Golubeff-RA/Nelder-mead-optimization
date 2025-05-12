@@ -22,6 +22,7 @@ void AppUI::initFrame() {
 }
 
 void AppUI::showIputWindow() {
+    
     ImGui::Begin(stringRes::input_window_string, nullptr, ImGuiWindowFlags_NoMove);
 
     ImGui::Text("%s", stringRes::measure_string);
@@ -47,6 +48,8 @@ void AppUI::showIputWindow() {
 }
 
 void AppUI::showOutputWindow() {
+    ImGui::SetNextWindowPos(ImVec2(750, 0));
+    ImGui::SetNextWindowSize(ImVec2(450, 250));
     ImGui::Begin(stringRes::output_window_string, nullptr, ImGuiWindowFlags_NoMove);
     int index = 1;
     if (_showLogs)
@@ -69,18 +72,21 @@ void AppUI::showOutputWindow() {
         idx++;
     }
 
+    ImGui::SetNextWindowPos(ImVec2(750, 250));
+    ImGui::SetNextWindowSize(ImVec2(750, 750));
     ImGui::Begin(stringRes::graphic_window_string, nullptr, ImGuiWindowFlags_NoMove);
     if (ImPlot::BeginPlot(stringRes::function_graphic_string, ImVec2(-1, -1))) {
         ImPlot::PlotLine(stringRes::q_from_X_string, generations, functionValues, _logs.size());
         ImPlot::EndPlot();
     }
     ImGui::End();
-
     delete[] generations;
     delete[] functionValues;
 }
 
 void AppUI::showSettingsWindow() {
+    ImGui::SetNextWindowPos(ImVec2(0, 250));
+    ImGui::SetNextWindowSize(ImVec2(750, 250));
     ImGui::Begin(stringRes::settings_window_string, nullptr, ImGuiWindowFlags_NoMove);
     ImGui::SetNextItemWidth(ImGui::GetWindowWidth() - 250);
     ImGui::InputFloat(stringRes::solving_error_string, &_error);

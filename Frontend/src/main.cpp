@@ -18,7 +18,6 @@ int main() {
 
     ImGui_ImplOpenGL3_Init("#version 130");
     AppUI app;
-
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         if (glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
@@ -29,7 +28,9 @@ int main() {
         app.initFrame();
         app.showIputWindow();
         app.showSettingsWindow();
-
+        /*auto viewport = ImGui::GetMainViewport();
+        std::cout << "Display: size = " << viewport->Size.x << "x" << viewport->Size.y 
+        << " pos = (" << viewport->WorkPos.x << ";" << viewport->WorkPos.y << ")\n";*/
         renderWindow(window);
     }
     
