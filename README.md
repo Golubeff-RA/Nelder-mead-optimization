@@ -1,10 +1,11 @@
 # Nelder-Mead-optimization
 Приложение под Linux, оптимизирующее функцию, заданную аналитически, с помощью эвристического алгоритма Нелдера-Мида
-# #########################
-# если запускаешь в windows
-https://sourceforge.net/projects/gnuwin32/
-https://cmake.org/download/
-https://www.equation.com/servlet/equation.cmd?fa=fortran
+# Запуск в Windows 11
+https://cmake.org/download/<br>
+https://sourceforge.net/projects/gnuwin32/<br>
+https://www.equation.com/servlet/equation.cmd?fa=fortran<br>
+Добавьте в переменные окружения (PATH) папку bin из MinGW
+``` cmd
 mingw-get install mingw32-make
 mkdir build
 cd build
@@ -14,7 +15,7 @@ cd ../
 pip install PyQt5 matplotlib
 set QT_DEBUG_PLUGINS=1
 python frontend.py
-# #########################
+```
 # Команда
 Голубев Р. - поиск библиотек, CMake (ломаем, потом 3 дня чиним), алгоритм оптимизации.
 <br>Пудков М. - frontend, предобработка входящей функции, тестирование.
