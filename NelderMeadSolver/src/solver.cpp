@@ -15,19 +15,20 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
         while (counter < update_simplex_ && measure > eps_) {
             ++counter;
             measure = Measure(simplex);
-            current_optimization.push_back(Log{{simplex.begin()->second}, measure, simplex.begin()->first});
+            current_optimization.push_back(
+                Log{{simplex.begin()->second}, measure, simplex.begin()->first});
 
             Point worst{std::prev(simplex.end())->second};
             Point center{CalcCenter_(simplex)};
             Point reflected = (1.0 + refle_coef_) * center - refle_coef_ * worst;
             // значение функции в отраженной точке
-            double f_r = func.Calculate(reflected); 
+            double f_r = func.Calculate(reflected);
             // лучшее значение функции
-            double f_l = simplex.begin()->first;  
+            double f_l = simplex.begin()->first;
             // второе по лучшести
-            double f_g = std::next(simplex.begin())->first;  
+            double f_g = std::next(simplex.begin())->first;
             // самое плохое значение функции
-            double f_h = std::prev(simplex.end())->first;  
+            double f_h = std::prev(simplex.end())->first;
 
             // Q(X) в отраженной точке лучше лучшего значения
             if (f_r < f_l) {
@@ -69,7 +70,7 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
     return simplex.begin()->first;
 }
 
-std::list<Log> NelderMeadSolver::GetLogs(const std::string& function) {
+const std::list<Log>& NelderMeadSolver::GetLogs(const std::string& function) {
     return optimized_functions_.at(function);
 }
 

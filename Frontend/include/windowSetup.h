@@ -12,6 +12,6 @@
 #include "imgui_impl_opengl3.h"
 #include "stringResources.h"
 
-GLFWwindow* setWindow();
-void renderWindow(GLFWwindow* window);
-void closeWindow(GLFWwindow* window);
+GLFWwindow* SetWindow();
+void RenderWindow(GLFWwindow* window);
+void CloseWindow(GLFWwindow* window);

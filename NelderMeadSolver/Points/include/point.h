@@ -9,14 +9,6 @@ public:
     Point(std::size_t dimensions);
     Point(const std::vector<double>& data);
     Point(std::initializer_list<double>&& data);
-    // rule of 5 realisation //
-    Point(const Point& other);
-    Point(Point&& other);
-    Point& operator=(const Point& other);
-
-    Point& operator=(Point&& other);
-    ~Point();
-    // ... //
 
     std::size_t Size() const;
     double operator[](std::size_t idx) const;
