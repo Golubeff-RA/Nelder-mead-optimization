@@ -1,39 +1,6 @@
-#include "graphics.h"
-#include "windowSetup.h"
-
-static void glfw_error_callback(int error, const char* description) {
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
-}
+#include "app.h"
 
 int main() {
-    glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit()) {
-        return 1;
-    }
-
-    GLFWwindow* window = setWindow();
-    if (window == nullptr) {
-        return 1;
-    }
-
-    ImGui_ImplOpenGL3_Init("#version 130");
-    AppUI app;
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-        if (glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
-            ImGui_ImplGlfw_Sleep(10);
-            continue;
-        }
-
-        app.initFrame();
-        app.showIputWindow();
-        app.showSettingsWindow();
-        /*auto viewport = ImGui::GetMainViewport();
-        std::cout << "Display: size = " << viewport->Size.x << "x" << viewport->Size.y 
-        << " pos = (" << viewport->WorkPos.x << ";" << viewport->WorkPos.y << ")\n";*/
-        renderWindow(window);
-    }
-    
-    closeWindow(window);
+    AppUI{}.Run();
     return 0;
 }

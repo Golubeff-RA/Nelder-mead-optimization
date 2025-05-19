@@ -1,6 +1,6 @@
 #include "windowSetup.h"
 
-GLFWwindow* setWindow() {
+GLFWwindow* SetWindow() {
     GLFWwindow* window = glfwCreateWindow(1280, 720, stringRes::app_name_string, nullptr, nullptr);
     if (window == nullptr)
         return NULL;
@@ -23,7 +23,7 @@ GLFWwindow* setWindow() {
     return window;
 }
 
-void renderWindow(GLFWwindow* window) {
+void RenderWindow(GLFWwindow* window) {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     ImGui::Render();
     int display_w, display_h;
@@ -38,11 +38,10 @@ void renderWindow(GLFWwindow* window) {
     glfwSwapBuffers(window);
 }
 
-void closeWindow(GLFWwindow* window) {
+void CloseWindow(GLFWwindow* window) {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
     glfwDestroyWindow(window);
     glfwTerminate();
 }

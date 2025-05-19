@@ -34,8 +34,7 @@ add_library(imgui STATIC
 
 add_library(app STATIC
     ${FRONTEND_DIR}/src/windowSetup.cpp
-    ${FRONTEND_DIR}/src/stringResources.cpp
-    ${FRONTEND_DIR}/src/graphics.cpp
+    ${FRONTEND_DIR}/src/app.cpp
 )
 
 add_executable(${PROJECT_NAME} src/main.cpp)

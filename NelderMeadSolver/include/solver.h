@@ -28,7 +28,7 @@ public:
     size_t CountDim(const std::string& function);
 
     // вернёт логи процесса оптимизации функции
-    std::list<Log> GetLogs(const std::string& function);
+    const std::list<Log>& GetLogs(const std::string& function);
 
     double eps() const;
 
