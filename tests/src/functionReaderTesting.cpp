@@ -156,7 +156,7 @@ TEST(WithScobkaOperations, test7)
 
 TEST(WithScobkaOperations, test8)
 {
-    std::string expression = "-1*(-x1)";
+    std::string expression = "0 + (1)*(x1)";
     std::vector<double> p = {4};
     Point point(p);
     double ans = 4;
