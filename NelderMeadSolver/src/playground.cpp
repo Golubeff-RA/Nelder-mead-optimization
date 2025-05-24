@@ -25,54 +25,15 @@ std::vector<std::string> Split(const std::string& string, const std::string& del
     return out;
 }
 
-void PrintPoint(const Point& p, std::ostream& out) {
-    out << "(";
-    for (size_t idx = 0; idx < p.Size(); ++idx) {
-        out << std::fixed << p[idx];
-        if (idx != p.Size() - 1) {
-            out << ", ";
-        }
-    }
-    out << ")";
-}
-
-void WriteLog(const Log& log, std::ostream& out) {
-    out << std::fixed << log.func_val << " " << std::fixed << log.measure << " {";
-    for (const auto& point : log.points) {
-        PrintPoint(point, out);
-    }
-    out << "}\n";
-}
-
-// 0 - имя программы
-// 1 - число итераций
-// 2 - минимальный симплекс
-// 3 - функция
-// 4 - путь до файла логов
-// 5 - стартовая точка
 int main(int argc, char* argv[]) {
-    std::cout << "Ready";
-    for (int i = 1; i < argc; ++i) {
-        std::string arg = argv[i];  // Преобразование char* в std::string
-        std::cout << "Аргумент " << i << ": " << arg << std::endl;
-    }
-    const uint32_t epoch = atoi(argv[1]);
-    const double eps = atof(argv[2]);
-    NelderMeadSolver solver(eps, epoch);
-    const std::string func_str(argv[3]);
-    std::ofstream out_file(argv[4]);
-    try {
-        std::vector<double> point_data;
-        for (const auto& coord : Split(argv[5])) {
-            point_data.push_back(atof(coord.c_str()));
-        }
-        solver.Optimize(func_str, Point(point_data));
-    } catch (...) {
-        return 1;
-    }
-
-    for (const auto& log : solver.GetLogs(func_str)) {
-        WriteLog(log, out_file);
-    }
+    LoggerPtr logger = Logger::GetLogger();
+    std::cout << "Logger address: " << logger << std::endl;
+    NelderMeadSolver solv1(logger);
+    NelderMeadSolver solv2(logger);
+    NelderMeadSolver solv3(logger);
+    std::cout << sizeof(solv1) << std::endl;
+    solv1.Optimize({"x1 + x2 + x3", 100, 0.1, Point{0, 34, 89}});
+    solv2.Optimize({"abs(x1 + x2)", 50, 0.001, Point{60, 80}});
+    solv3.Optimize({"x1^2 + x2^2", 200, 0, Point{60, 80}});
     return 0;
 }

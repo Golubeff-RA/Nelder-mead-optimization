@@ -70,6 +70,7 @@
         "any": "cpp",
         "map": "cpp",
         "format": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "fstream": "cpp"
     },
 }

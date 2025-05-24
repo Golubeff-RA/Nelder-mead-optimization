@@ -9,56 +9,40 @@
 #include <vector>
 
 #include "function.h"
+#include "logger.h"
 #include "point.h"
 
-struct Log {
-    std::vector<Point> points;  // точки симплекса
-    double measure;             // мера симплекса
-    double func_val;            // значение функции
-};
+using Simplex = std::multimap<double, Point>;
 
 class NelderMeadSolver {
 public:
-    NelderMeadSolver(double eps = 10e-5, size_t epoch = 100);
-
+    NelderMeadSolver(LoggerPtr log_ptr, double expan_coef_ = 2, double shrnk_coef = 0.5,
+                     double refle_coef = 1, size_t update_simplex = 25);
     // вернёт найденный минимум функции стартуя с заданной точки
-    double Optimize(const std::string& function, const Point& start_point);
+    double Optimize(const OptInfo& info);
 
-    // счтает переменных в оптимизируемой функции
-    size_t CountDim(const std::string& function);
-
-    // вернёт логи процесса оптимизации функции
-    const std::list<Log>& GetLogs(const std::string& function);
-
-    double eps() const;
-
-    double& eps();
-
-    size_t epoch() const;
-
-    size_t& epoch();
+    // считает число переменных в оптимизируемой функции
+    static size_t CountDim(const std::string& function);
 
 private:
-    double eps_;
-    size_t epoch_;
-    std::map<std::string, std::list<Log>> optimized_functions_;
-    const double expan_coef_ = 2;
-    const double shrnk_coef_ = 0.5;
-    const double refle_coef_ = 1;
-    const size_t update_simplex_ = 25;
+    const LoggerPtr log_ptr_;
+    const double expan_coef_;
+    const double shrnk_coef_;
+    const double refle_coef_;
+    const size_t update_simplex_;
 
     // вычисляет центр "лучших" точек симплекса
-    Point CalcCenter_(const std::multimap<double, Point>& simplex);
+    Point CalcCenter_(const Simplex& simplex);
 
     // генерирует опорный симплекс
-    std::multimap<double, Point> GenerateSimplex_(size_t dim, Point start_point, Function& func);
+    Simplex GenerateSimplex_(size_t dim, Point start_point, Function& func);
 
     // преобразует симплекс в вектор точек
-    std::vector<Point> SimplexToVector_(const std::multimap<double, Point>& simplex);
+    std::vector<Point> SimplexToVector_(const Simplex& simplex);
 
     // оператор локального сжатия
-    void LocalShrink_(Function& func, std::multimap<double, Point>& simplex, const Point& center);
+    void LocalShrink_(Function& func, Simplex& simplex, const Point& center);
 
     // оператор глобального сжатия всего симплекса
-    void GlobalShrink_(Function& func, std::multimap<double, Point>& simplex);
+    void GlobalShrink_(Function& func, Simplex& simplex);
 };

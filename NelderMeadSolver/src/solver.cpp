@@ -1,23 +1,29 @@
 #include "solver.h"
 
-NelderMeadSolver::NelderMeadSolver(double eps, size_t epoch) : eps_(eps), epoch_(epoch) {
+#include <set>
+
+NelderMeadSolver::NelderMeadSolver(LoggerPtr log_ptr, double expan_coef, double shrnk_coef,
+                                   double refle_coef, size_t update_simplex)
+    : log_ptr_(log_ptr),
+      expan_coef_(expan_coef),
+      shrnk_coef_(shrnk_coef),
+      refle_coef_(refle_coef),
+      update_simplex_(update_simplex) {
 }
 
-double NelderMeadSolver::Optimize(const std::string& function, const Point& start_point) {
+double NelderMeadSolver::Optimize(const OptInfo& info) {
     srand(time(0));
-    std::list<Log> current_optimization;
     double measure = 100;
-    size_t dim_size = CountDim(function);
-    Function func{function};
-    auto simplex{GenerateSimplex_(dim_size, start_point, func)};
-    for (size_t i = 0; i < std::max((size_t)1ul, epoch_ / update_simplex_); ++i) {
+    LogList current_optimization;
+    size_t dim_size = NelderMeadSolver::CountDim(info.function);
+    Function func{info.function};
+    Simplex simplex{GenerateSimplex_(dim_size, info.start_point, func)};
+    for (size_t i = 0; i < std::max((size_t)1ul, info.epoch / update_simplex_); ++i) {
         size_t counter = 0;
-        while (counter < update_simplex_ && measure > eps_) {
+        while (counter < std::min(update_simplex_, info.epoch) && measure > info.measure) {
             ++counter;
             measure = Measure(simplex);
-            current_optimization.push_back(
-                Log{{simplex.begin()->second}, measure, simplex.begin()->first});
-
+            current_optimization.push_back({simplex.begin()->first, measure, simplex.begin()->second});
             Point worst{std::prev(simplex.end())->second};
             Point center{CalcCenter_(simplex)};
             Point reflected = (1.0 + refle_coef_) * center - refle_coef_ * worst;
@@ -61,31 +67,42 @@ double NelderMeadSolver::Optimize(const std::string& function, const Point& star
                 LocalShrink_(func, simplex, center);
                 continue;
             }
+            
+            
         }
         simplex = GenerateSimplex_(dim_size, simplex.begin()->second, func);
     }
 
-    optimized_functions_.erase(function);
-    optimized_functions_.insert({function, std::move(current_optimization)});
+    log_ptr_->WriteHTML(info, current_optimization, this);
     return simplex.begin()->first;
 }
 
-const std::list<Log>& NelderMeadSolver::GetLogs(const std::string& function) {
-    return optimized_functions_.at(function);
-}
+size_t NelderMeadSolver::CountDim(const std::string& function) {
+    std::set<size_t> vars;
+    size_t idx = 0;
+    while (idx < function.size()) {
+        if (function[idx] == 'x') {
+            ++idx;
+            std::string num{};
+            while (idx < function.size() && function[idx] >= '0' && function[idx] <= '9') {
+                num.push_back(function[idx]);
+                ++idx;
+            }
+            if (num.size() > 0) {
+                vars.insert(std::stoull(num));
+            } else {
+                throw std::runtime_error("invalid variable name");
+            }
+        }
+        ++idx;
+    }
 
-double NelderMeadSolver::eps() const {
-    return eps_;
-}
-
-double& NelderMeadSolver::eps() {
-    return eps_;
-}
-
-size_t NelderMeadSolver::epoch() const {
-    return epoch_;
-}
-
-size_t& NelderMeadSolver::epoch() {
-    return epoch_;
+    // not have vars in expression
+    if (vars.size() == 0) {
+        return 0;
+    }
+    if (*(std::prev(vars.end())) != vars.size()) {
+        throw std::runtime_error("Wrong variable numerization!");
+    }
+    return *(std::prev(vars.end()));
 }
