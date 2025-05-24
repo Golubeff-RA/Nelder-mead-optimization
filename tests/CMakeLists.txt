@@ -17,13 +17,15 @@ set(POINT_TEST_SRC  "src/pointsTesting.cpp"
                     "src/solverTesting.cpp")
 set(FUNC_TEST_SRC   "src/functionReaderTesting.cpp"
                     "src/solverTesting.cpp")
+set(LOG_TEST_SRC    "src/loggerTesting.cp")
 
 add_executable(solver.tests ${SOLVER_TEST_SRC})
 add_executable(points.tests ${POINT_TEST_SRC})
 add_executable(functionReader.tests ${FUNC_TEST_SRC})
-add_executable(all.tests ${SOLVER_TEST_SRC} ${FUNC_TEST_SRC})
+add_executable(logger.tests ${LOG_TEST_SRC})
+add_executable(all.tests ${SOLVER_TEST_SRC} ${FUNC_TEST_SRC} ${POINT_TEST_SRC} ${LOG_TEST_SRC})
 target_link_libraries(solver.tests  gtest gmock pthread solver )
 target_link_libraries(points.tests gtest gmock pthread solver)
 target_link_libraries(functionReader.tests gtest gmock pthread solver)
+target_link_libraries(logger.tests gtest gmock)
 target_link_libraries(all.tests  gtest gmock pthread solver )
-

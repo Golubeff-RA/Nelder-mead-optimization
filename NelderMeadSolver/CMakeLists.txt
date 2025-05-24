@@ -6,6 +6,7 @@ add_subdirectory(FunctionReader)
 add_library(solver SHARED
     ${SOLVER_DIR}/src/solver.cpp
     ${SOLVER_DIR}/src/solver_utils.cpp
+    ${SOLVER_DIR}/src/logger.cpp
 )
 
 add_library(point SHARED

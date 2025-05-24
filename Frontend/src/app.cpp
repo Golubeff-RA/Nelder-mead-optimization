@@ -35,7 +35,6 @@ void AppUI::Run() {
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         if (glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
-            ImGui_ImplGlfw_Sleep(10);
             continue;
         }
 
@@ -79,23 +78,22 @@ void AppUI::ShowInputWindow_() {
 }
 
 void AppUI::ShowOutputWindow_() {
-    const auto& logs = solver_.GetLogs(readed_function_);
+    const auto& logs = logger->GetLogs(&solver_);
     ImGui::Begin(stringRes::output_window_string);
     int iter = 1;
-    if (show_logs_)
+    if (show_logs_) {
         for (const auto& log : logs) {
             ImGui::Text("%d) ", iter);
             ImGui::SameLine();
             ImGui::Text("%s %lf", stringRes::measure_string, log.func_val);
-            for (const auto& point : log.points) {
-                PrintPoint_(point);
-            }
+            PrintPoint_(log.best_point);
             ++iter;
         }
+    }
     ImGui::Text("%s\n%s %lf", stringRes::answer_string, stringRes::measure_string, answer_);
     ImGui::Text("%s\n", stringRes::argmin);
     ImGui::SameLine();
-    PrintPoint_(logs.back().points.front());
+    PrintPoint_(logs.back().best_point);
     ImGui::End();
 
     std::vector<float> iterations(logs.size());
@@ -193,9 +191,8 @@ void AppUI::ReadFunction_() {
 void AppUI::OptimizeFunction_() {
     if (ImGui::Button(stringRes::optimize_button_string)) {
         try {
-            solver_.eps() = error_;
-            solver_.epoch() = iterations_;
-            answer_ = solver_.Optimize(readed_function_, start_point_);
+            answer_ = solver_.Optimize(
+                {readed_function_, static_cast<size_t>(iterations_), error_, start_point_});
             ImPlot::CreateContext();
             optimize_function_ = true;
         } catch (const std::runtime_error& e) {
