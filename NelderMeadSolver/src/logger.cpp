@@ -15,7 +15,7 @@ LoggerPtr Logger::GetLogger() {
 
 void Logger::WriteHTML(const OptInfo& info, const std::list<Log>& logs,
                        const NelderMeadSolver* solver) {
-    std::cout << "Writing logs from solver" << solver << std::endl;
+    //std::cout << "Writing logs from solver" << solver << std::endl;
     last_optimizations[solver] = logs;
     std::string filename = std::format("{}", (static_cast<const void*>(solver))) + " " +
                            TimePointToStr(ch::system_clock::now()) + " " + std::to_string(counter) +
@@ -28,7 +28,7 @@ void Logger::WriteHTML(const OptInfo& info, const std::list<Log>& logs,
     WriteLogs_(out_file, logs);
     out_file.close();
     ++counter;
-    UpdateIndexHtml_(subdir_path / filename, info.function);
+    UpdateIndexHtml_(subdir_path / filename, info, solver);
 }
 
 LogList Logger::GetLogs(const NelderMeadSolver* solver) {
@@ -54,33 +54,20 @@ Logger::Logger() {
     }
 }
 
-void Logger::UpdateIndexHtml_(fs::path new_file, const std::string& function) {
+void Logger::UpdateIndexHtml_(fs::path new_file, const OptInfo& info, const NelderMeadSolver* solver) {
     if (new_file.has_relative_path()) {
         new_file = new_file.lexically_relative(new_file.root_path() / new_file.begin()->string());
     }
     std::ofstream index_html(parent_path / "index.html", std::ios::app);
-    index_html << "<li><a href=" << new_file << ">" << function << "</a></li>\n";
+    index_html << "<li><a href=" << new_file << ">" << info.function << "</a></li>";
     index_html.close();
 }
 
 void Logger::WriteIndexHTML_() {
     std::ofstream index_html(parent_path / "index.html");
     index_html << "<head><title>История оптимизаций</title> \
-                <style> body {font-family: 'Courier New', Courier, monospace;} </style></head>\n";
+                   <style> body {font-family: 'Courier New', Courier, monospace;} </style></head>\n";
     index_html << "<body> <h3>История оптимизаций</h3>\n<ol>";
-    /*for (const auto& entry : fs::recursive_directory_iterator(parent_path)) {
-        if (entry.is_regular_file()) {
-            if (entry.path().filename() == "index.html") {
-                continue;
-            }
-            auto entry_path = entry.path();
-            if (entry_path.has_relative_path()) {
-                entry_path = entry_path.lexically_relative(entry_path.root_path() /
-                                                           entry_path.begin()->string());
-            }
-            index_html << "<li><a href=" << entry_path << ">" << entry_path << "</a></li>\n";
-        }
-    }*/
     index_html.close();
 }
 

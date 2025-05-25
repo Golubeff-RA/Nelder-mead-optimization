@@ -1,10 +1,5 @@
-#include <fstream>
-#include <iomanip>
 #include <iostream>
-#include <regex>
-#include <vector>
 
-#include "point.h"
 #include "solver.h"
 
 std::vector<std::string> Split(const std::string& string, const std::string& delimiter = " ") {
@@ -27,11 +22,10 @@ std::vector<std::string> Split(const std::string& string, const std::string& del
 
 int main(int argc, char* argv[]) {
     LoggerPtr logger = Logger::GetLogger();
-    std::cout << "Logger address: " << logger << std::endl;
     NelderMeadSolver solv1(logger);
     NelderMeadSolver solv2(logger);
     NelderMeadSolver solv3(logger);
-    std::cout << sizeof(solv1) << std::endl;
+
     solv1.Optimize({"x1 + x2 + x3", 100, 0.1, Point{0, 34, 89}});
     solv2.Optimize({"abs(x1 + x2)", 50, 0.001, Point{60, 80}});
     solv3.Optimize({"x1^2 + x2^2", 200, 0, Point{60, 80}});

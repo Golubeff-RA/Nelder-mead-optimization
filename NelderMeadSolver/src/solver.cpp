@@ -106,3 +106,9 @@ size_t NelderMeadSolver::CountDim(const std::string& function) {
     }
     return *(std::prev(vars.end()));
 }
+
+std::string NelderMeadSolver::GetHyperparams() const {
+    std::ostringstream oss;
+    oss << "Reflect: " << refle_coef_ << " Shrink: " << shrnk_coef_ << " Expan: " << expan_coef_ << " Upd simplex: " << update_simplex_;
+    return oss.str();
+}

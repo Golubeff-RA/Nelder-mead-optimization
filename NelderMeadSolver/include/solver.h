@@ -20,9 +20,11 @@ public:
                      double refle_coef = 1, size_t update_simplex = 25);
     // вернёт найденный минимум функции стартуя с заданной точки
     double Optimize(const OptInfo& info);
-
+    // вернёт строчку с гиперпараметрами оптимизации
+    std::string GetHyperparams() const;
     // считает число переменных в оптимизируемой функции
     static size_t CountDim(const std::string& function);
+    
 
 private:
     const LoggerPtr log_ptr_;
