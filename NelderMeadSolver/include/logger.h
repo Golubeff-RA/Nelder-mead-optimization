@@ -62,7 +62,7 @@ private:
     void WriteLogs_(std::ostream& out, const LogList& logs);
     void WriteAnswer_(std::ostream& out, const LogList& logs);
     void WriteOptInfo_(std::ostream& out, const OptInfo& info);
-    void UpdateIndexHtml_(fs::path new_file, const std::string& function);
+    void UpdateIndexHtml_(fs::path new_file, const OptInfo& info, const NelderMeadSolver* solver);
 };
 
 inline LoggerPtr Logger::instance = nullptr;
