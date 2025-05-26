@@ -41,7 +41,7 @@ Point NelderMeadSolver::CalcCenter_(const std::multimap<double, Point>& simplex)
 }
 
 std::multimap<double, Point> NelderMeadSolver::GenerateSimplex_(size_t dim, Point start_point,
-                                                                Function& func) {
+                                                                FR::Function& func) {
     std::multimap<double, Point> simplex;
     simplex.insert({func.Calculate(start_point), start_point});
 
@@ -64,7 +64,7 @@ std::vector<Point> NelderMeadSolver::SimplexToVector_(const std::multimap<double
     return points;
 }
 
-void NelderMeadSolver::LocalShrink_(Function& func, std::multimap<double, Point>& simplex,
+void NelderMeadSolver::LocalShrink_(FR::Function& func, std::multimap<double, Point>& simplex,
                                     const Point& center) {
     Point worst{std::prev(simplex.end())->second};
     double f_h = std::prev(simplex.end())->first;
@@ -78,7 +78,7 @@ void NelderMeadSolver::LocalShrink_(Function& func, std::multimap<double, Point>
     }
 }
 
-void NelderMeadSolver::GlobalShrink_(Function& func, std::multimap<double, Point>& simplex) {
+void NelderMeadSolver::GlobalShrink_(FR::Function& func, std::multimap<double, Point>& simplex) {
     Point best{simplex.begin()->second};
     std::vector<Point> shrinked;
     shrinked.reserve(simplex.size());

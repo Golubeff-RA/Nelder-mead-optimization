@@ -173,7 +173,7 @@ void AppUI::ReadFunction_() {
     strcpy(readed_function_, input_function_);
     if (IsExprCorrect_(readed_function_)) {
         try {
-            Function func(readed_function_);
+            FR::Function func(readed_function_);
             print_function_ = true;
             dimensions_ = solver_.CountDim(readed_function_);
             start_point_ = Point(dimensions_);
