@@ -51,14 +51,14 @@ private:
     Point CalcCenter_(const std::multimap<double, Point>& simplex);
 
     // генерирует опорный симплекс
-    std::multimap<double, Point> GenerateSimplex_(size_t dim, Point start_point, Function& func);
+    std::multimap<double, Point> GenerateSimplex_(size_t dim, Point start_point, FR::Function& func);
 
     // преобразует симплекс в вектор точек
     std::vector<Point> SimplexToVector_(const std::multimap<double, Point>& simplex);
 
     // оператор локального сжатия
-    void LocalShrink_(Function& func, std::multimap<double, Point>& simplex, const Point& center);
+    void LocalShrink_(FR::Function& func, std::multimap<double, Point>& simplex, const Point& center);
 
     // оператор глобального сжатия всего симплекса
-    void GlobalShrink_(Function& func, std::multimap<double, Point>& simplex);
+    void GlobalShrink_(FR::Function& func, std::multimap<double, Point>& simplex);
 };

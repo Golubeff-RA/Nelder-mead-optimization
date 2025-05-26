@@ -2,14 +2,16 @@
 #include "definition.h"
 #include "point.h"
 
-int GetTypeOperation(std::string operand);
+namespace FR {
+    TYPE GetTypeOperation(std::string operand);
 
-int GetNameOperation(std::string operand);
+    OPERAND GetNameOperation(std::string operand);
 
-bool CheckOperandsMore(std::string operand1, std::string operand2);
+    bool CheckOperandsMore(std::string operand1, std::string operand2);
 
-bool IsOperation(std::string operand);
+    bool IsOperation(std::string operand);
 
-bool IsOperation(char operand);
+    bool IsOperation(char operand);
 
-double Calc(std::string operation, std::vector<double>& vecNumber);
+    double Calc(std::string operation, std::vector<double>& vecNumber);
+} // end FR
