@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "solver.h"
+#include "logger.h"
 
 
 TEST(MiddleOptimizeTest, test1) {

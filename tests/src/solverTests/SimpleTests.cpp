@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "solver.h"
+#include "logger.h"
 
 TEST(CountDim, test) {
     SLV::LoggerPtr logger = SLV::Logger::GetLogger();
     SLV::NelderMeadSolver solv(logger);
+
     EXPECT_EQ(solv.CountDim("x1 + x2 + x3 + x4"), 4);
 }
 
@@ -17,7 +19,6 @@ TEST(OptimizeTest, test1) {
     Point point(p);
     double err = 10e-2;
     double ans = 0;
-
     double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
         res = std::min(res, solv.Optimize({expr, 100, 0, p}));
@@ -34,7 +35,6 @@ TEST(OptimizeTest, test2) {
     Point point(p);
     double err = 10e-2;
     double ans = -1;
-
     double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
         res = std::min(res, solv.Optimize({expr, 100, 0, p}));

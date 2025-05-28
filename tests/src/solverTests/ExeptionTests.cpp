@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "solver.h"
+#include "logger.h"
 
 
 TEST(ExeptionTests, test1) {
@@ -9,6 +10,7 @@ TEST(ExeptionTests, test1) {
     
     try{
         solv.Optimize({"x1 + x3", 100, 0, {3, 10}});
+
         FAIL();
     } catch (std::runtime_error &e) {
         EXPECT_STREQ("Wrong variable numerization!", e.what());
@@ -21,6 +23,7 @@ TEST(ExeptionTests, test2) {
     
     try{
         solv.Optimize({"xa + x3", 100, 0, {3, 10}});
+
         FAIL();
     } catch (std::runtime_error &e) {
         EXPECT_STREQ("invalid variable name", e.what());
