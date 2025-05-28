@@ -8,9 +8,9 @@
 
 class AppUI {
 private:
-    LoggerPtr logger = Logger::GetLogger();
+    SLV::LoggerPtr logger{SLV::Logger::GetLogger()};
     Point start_point_ = Point(0);
-    NelderMeadSolver solver_ = NelderMeadSolver(logger);
+    SLV::NelderMeadSolver solver_{logger};
 
     char readed_function_[128] = "";
     char input_function_[128] = "";

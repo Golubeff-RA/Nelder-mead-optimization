@@ -12,6 +12,7 @@
 #include "logger.h"
 #include "point.h"
 
+namespace SLV {
 using Simplex = std::multimap<double, Point>;
 
 class NelderMeadSolver {
@@ -24,7 +25,6 @@ public:
     std::string GetHyperparams() const;
     // считает число переменных в оптимизируемой функции
     static size_t CountDim(const std::string& function);
-    
 
 private:
     const LoggerPtr log_ptr_;
@@ -39,7 +39,6 @@ private:
     // генерирует опорный симплекс
     Simplex GenerateSimplex_(size_t dim, Point start_point, FR::Function& func);
 
-
     // преобразует симплекс в вектор точек
     std::vector<Point> SimplexToVector_(const Simplex& simplex);
 
@@ -48,5 +47,6 @@ private:
 
     // оператор глобального сжатия всего симплекса
     void GlobalShrink_(FR::Function& func, Simplex& simplex);
-
 };
+
+}  // namespace SLV

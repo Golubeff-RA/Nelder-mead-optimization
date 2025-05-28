@@ -34,14 +34,6 @@ public:
     Point(size_t dimensions);
     Point(const std::vector<double>& data);
     Point(std::initializer_list<double>&& data);
-    // rule of 5 realisation //
-    Point(const Point& other);
-    Point(Point&& other);
-    Point& operator=(const Point& other);
-
-    Point& operator=(Point&& other);
-    ~Point();
-    // ... //
 
     size_t Size() const;
     double operator[](size_t idx) const;
@@ -69,69 +61,126 @@ private:
 ```
 Function - переводит исходную строку функции в польскую запись при создании и считает значение в точке с помощью метода Calculate.
 ```c++
+namespace FR {
 class Function {
 private:
     std::string expression_;
     std::vector<std::string> vecOperand_;
 
 public:
-    Function(std::string expression);
-    double Calculate(Point& point);
-}; 
-```
-Solver - оптимизатор, в котором и реализован сам алгоритм Нелдера-Мида.
-``` c++
-struct Log {
-    std::vector<Point> points;  // точки симплекса
-    double measure;             // мера симплекса
-    double func_val;            // значение функции
+    Function(const std::string expression);
+    double Calculate(const Point& point);
 };
+}  // namespace FR
+```
+NelderMeadSolver - оптимизатор, в котором и реализован сам алгоритм Нелдера-Мида.
+``` c++
+namespace SLV {
+using Simplex = std::multimap<double, Point>;
 
 class NelderMeadSolver {
 public:
-    NelderMeadSolver(double eps = 10e-5, size_t epoch = 100);
-
+    NelderMeadSolver(LoggerPtr log_ptr, double expan_coef_ = 2, double shrnk_coef = 0.5,
+                     double refle_coef = 1, size_t update_simplex = 25);
     // вернёт найденный минимум функции стартуя с заданной точки
-    double Optimize(const std::string& function, const Point& start_point);
-
-    // счтает переменных в оптимизируемой функции
-    size_t CountDim(const std::string& function);
-
-    // вернёт логи процесса оптимизации функции
-    const std::list<Log>& GetLogs(const std::string& function);
-
-    double eps() const;
-
-    double& eps();
-
-    size_t epoch() const;
-
-    size_t& epoch();
+    double Optimize(const OptInfo& info);
+    // вернёт строчку с гиперпараметрами оптимизации
+    std::string GetHyperparams() const;
+    // считает число переменных в оптимизируемой функции
+    static size_t CountDim(const std::string& function);
 
 private:
-    double eps_;
-    size_t epoch_;
-    std::map<std::string, std::list<Log>> optimized_functions_;
-    const double expan_coef_ = 2;
-    const double shrnk_coef_ = 0.5;
-    const double refle_coef_ = 1;
-    const size_t update_simplex_ = 25;
+    const LoggerPtr log_ptr_;
+    const double expan_coef_;
+    const double shrnk_coef_;
+    const double refle_coef_;
+    const size_t update_simplex_;
 
     // вычисляет центр "лучших" точек симплекса
-    Point CalcCenter_(const std::multimap<double, Point>& simplex);
+    Point CalcCenter_(const Simplex& simplex);
 
     // генерирует опорный симплекс
-    std::multimap<double, Point> GenerateSimplex_(size_t dim, Point start_point, Function& func);
+    Simplex GenerateSimplex_(size_t dim, Point start_point, FR::Function& func);
 
     // преобразует симплекс в вектор точек
-    std::vector<Point> SimplexToVector_(const std::multimap<double, Point>& simplex);
+    std::vector<Point> SimplexToVector_(const Simplex& simplex);
 
     // оператор локального сжатия
-    void LocalShrink_(Function& func, std::multimap<double, Point>& simplex, const Point& center);
+    void LocalShrink_(FR::Function& func, Simplex& simplex, const Point& center);
 
     // оператор глобального сжатия всего симплекса
-    void GlobalShrink_(Function& func, std::multimap<double, Point>& simplex);
+    void GlobalShrink_(FR::Function& func, Simplex& simplex);
 };
+
+}  // namespace SLV
+```
+Logger - объект который хранит последнюю оптимизацию каждого NelderMeadSolver, также умеет создавать подобие сайта, на котором хранится история всех оптимизаций. 
+``` c++
+namespace SLV {
+namespace ch = std::chrono;
+namespace fs = std::filesystem;
+
+using TimePoint = std::chrono::system_clock::time_point;
+
+class Logger;
+class NelderMeadSolver;
+
+using LoggerPtr = std::shared_ptr<Logger>;
+
+struct Log {
+    double func_val;
+    double measure;
+    Point best_point;
+};
+
+struct OptInfo {
+    std::string function;
+    size_t epoch;
+    double measure;
+    Point start_point;
+};
+
+using LogList = std::list<Log>;
+
+struct Optimization {
+    OptInfo info;
+    LogList logs;
+};
+
+std::string TimePointToStr(const TimePoint& tp);
+
+class Logger {
+public:
+    static LoggerPtr GetLogger();
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+    LogList GetLogs(const NelderMeadSolver* solver);
+    void SaveLogs(const OptInfo& info, const std::list<Log>& logs, const NelderMeadSolver* solver);
+    void WriteHTML(const NelderMeadSolver* solver);
+
+private:
+    size_t counter{0};
+    fs::path subdir_path;
+    static LoggerPtr instance;
+    static std::once_flag init_flag;
+    const fs::path parent_path{"optimization_logs"};
+    std::map<const NelderMeadSolver*, Optimization> last_optimizations;
+
+    Logger();
+
+    void WriteIndexHTML_();
+    void WriteHead_(std::ostream& out);
+    void WritePoint_(std::ostream& out, const Point& p);
+    void WriteLogs_(std::ostream& out, const LogList& logs);
+    void WriteAnswer_(std::ostream& out, const LogList& logs);
+    void WriteOptInfo_(std::ostream& out, const OptInfo& info);
+    void UpdateIndexHtml_(fs::path new_file, const OptInfo& info, const NelderMeadSolver* solver);
+};
+
+inline LoggerPtr Logger::instance = nullptr;
+inline std::once_flag Logger::init_flag;
+}  // namespace SLV
+
 ```
 # UML-диаграмма
 <img src="UMLDiagram.svg">

@@ -8,9 +8,11 @@
 #include <memory>
 #include <mutex>
 #include <string>
+#include <utility>
 
 #include "point.h"
 
+namespace SLV {
 namespace ch = std::chrono;
 namespace fs = std::filesystem;
 
@@ -36,6 +38,11 @@ struct OptInfo {
 
 using LogList = std::list<Log>;
 
+struct Optimization {
+    OptInfo info;
+    LogList logs;
+};
+
 std::string TimePointToStr(const TimePoint& tp);
 
 class Logger {
@@ -44,15 +51,16 @@ public:
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
     LogList GetLogs(const NelderMeadSolver* solver);
-    void WriteHTML(const OptInfo& info, const std::list<Log>& logs, const NelderMeadSolver* solver);
+    void SaveLogs(const OptInfo& info, const std::list<Log>& logs, const NelderMeadSolver* solver);
+    void WriteHTML(const NelderMeadSolver* solver);
 
 private:
-    size_t counter = 0;
+    size_t counter{0};
     fs::path subdir_path;
     static LoggerPtr instance;
     static std::once_flag init_flag;
-    const fs::path parent_path = "optimization_logs";
-    std::map<const NelderMeadSolver*, LogList> last_optimizations;
+    const fs::path parent_path{"optimization_logs"};
+    std::map<const NelderMeadSolver*, Optimization> last_optimizations;
 
     Logger();
 
@@ -67,3 +75,4 @@ private:
 
 inline LoggerPtr Logger::instance = nullptr;
 inline std::once_flag Logger::init_flag;
+}  // namespace SLV

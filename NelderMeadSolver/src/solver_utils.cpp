@@ -1,5 +1,6 @@
 #include "solver.h"
 
+namespace SLV {
 Point NelderMeadSolver::CalcCenter_(const Simplex& simplex) {
     Point center(simplex.size() - 1);
     for (auto it = simplex.begin(); it != std::prev(simplex.end()); ++it) {
@@ -59,4 +60,5 @@ void NelderMeadSolver::GlobalShrink_(FR::Function& func, Simplex& simplex) {
     for (Point& p : shrinked) {
         simplex.insert({func.Calculate(p), p});
     }
+}
 }

@@ -1,5 +1,6 @@
 #include "logger.h"
 
+namespace SLV {
 std::string TimePointToStr(const TimePoint& tp) {
     auto time = std::chrono::system_clock::to_time_t(tp);
     std::tm local_time = *std::localtime(&time);
@@ -13,10 +14,19 @@ LoggerPtr Logger::GetLogger() {
     return instance;
 }
 
-void Logger::WriteHTML(const OptInfo& info, const std::list<Log>& logs,
-                       const NelderMeadSolver* solver) {
-    //std::cout << "Writing logs from solver" << solver << std::endl;
-    last_optimizations[solver] = logs;
+void Logger::SaveLogs(const OptInfo& info, const std::list<Log>& logs,
+                      const NelderMeadSolver* solver) {
+    last_optimizations[solver] = {std::move(info), std::move(logs)};
+}
+
+void Logger::WriteHTML(const NelderMeadSolver* solver) {
+    // std::cout << "Writing logs from solver" << solver << std::endl;
+    if (!last_optimizations.contains(solver)) {
+        return;
+    }
+
+    auto info = last_optimizations[solver].info;
+    auto logs = last_optimizations[solver].logs;
     std::string filename = std::format("{}", (static_cast<const void*>(solver))) + " " +
                            TimePointToStr(ch::system_clock::now()) + " " + std::to_string(counter) +
                            " .html";
@@ -33,7 +43,7 @@ void Logger::WriteHTML(const OptInfo& info, const std::list<Log>& logs,
 
 LogList Logger::GetLogs(const NelderMeadSolver* solver) {
     if (last_optimizations.contains(solver)) {
-        return last_optimizations.at(solver);
+        return last_optimizations.at(solver).logs;
     }
     return {};
 }
@@ -54,12 +64,16 @@ Logger::Logger() {
     }
 }
 
-void Logger::UpdateIndexHtml_(fs::path new_file, const OptInfo& info, const NelderMeadSolver* solver) {
+void Logger::UpdateIndexHtml_(fs::path new_file, const OptInfo& info,
+                              const NelderMeadSolver* solver) {
     if (new_file.has_relative_path()) {
         new_file = new_file.lexically_relative(new_file.root_path() / new_file.begin()->string());
     }
     std::ofstream index_html(parent_path / "index.html", std::ios::app);
-    index_html << "<li><a href=" << new_file << ">" << info.function << "</a></li>";
+    index_html << "<li><a href=" << new_file << ">" << info.function << "</a>";
+    index_html << "__Итерации: " << info.epoch << " Min мера: " << info.measure << " Точка: ";
+    WritePoint_(index_html, info.start_point);
+    index_html << "</li>\n";
     index_html.close();
 }
 
@@ -118,3 +132,4 @@ void Logger::WriteLogs_(std::ostream& out, const LogList& logs) {
     }
     out << "</ol>\n";
 }
+}  // namespace SLV
