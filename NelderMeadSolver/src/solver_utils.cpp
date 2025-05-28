@@ -10,6 +10,7 @@ Point NelderMeadSolver::CalcCenter_(const Simplex& simplex) {
 }
 
 Simplex NelderMeadSolver::GenerateSimplex_(size_t dim, Point start_point, FR::Function& func) {
+
     Simplex simplex;
     simplex.insert({func.Calculate(start_point), start_point});
 

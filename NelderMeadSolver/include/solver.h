@@ -39,6 +39,7 @@ private:
     // генерирует опорный симплекс
     Simplex GenerateSimplex_(size_t dim, Point start_point, FR::Function& func);
 
+
     // преобразует симплекс в вектор точек
     std::vector<Point> SimplexToVector_(const Simplex& simplex);
 
@@ -47,4 +48,5 @@ private:
 
     // оператор глобального сжатия всего симплекса
     void GlobalShrink_(FR::Function& func, Simplex& simplex);
+
 };

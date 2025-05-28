@@ -26,3 +26,4 @@ target_link_libraries(solver.tests  gtest gmock pthread solver )
 target_link_libraries(points.tests gtest gmock pthread solver)
 target_link_libraries(functionReader.tests gtest gmock pthread solver)
 target_link_libraries(all.tests  gtest gmock pthread solver )
+
