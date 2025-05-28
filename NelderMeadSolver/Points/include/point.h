@@ -6,7 +6,7 @@
 
 class Point {
 public:
-    Point(std::size_t dimensions);
+    Point(std::size_t dimensions = 0);
     Point(const std::vector<double>& data);
     Point(std::initializer_list<double>&& data);
 

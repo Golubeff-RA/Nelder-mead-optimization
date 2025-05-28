@@ -193,6 +193,7 @@ void AppUI::OptimizeFunction_() {
         try {
             answer_ = solver_.Optimize(
                 {readed_function_, static_cast<size_t>(iterations_), error_, start_point_});
+            logger->WriteHTML(&solver_);
             ImPlot::CreateContext();
             optimize_function_ = true;
         } catch (const std::runtime_error& e) {

@@ -2,6 +2,7 @@
 
 #include <set>
 
+namespace SLV {
 NelderMeadSolver::NelderMeadSolver(LoggerPtr log_ptr, double expan_coef, double shrnk_coef,
                                    double refle_coef, size_t update_simplex)
     : log_ptr_(log_ptr),
@@ -23,7 +24,8 @@ double NelderMeadSolver::Optimize(const OptInfo& info) {
         while (counter < std::min(update_simplex_, info.epoch) && measure > info.measure) {
             ++counter;
             measure = Measure(simplex);
-            current_optimization.push_back({simplex.begin()->first, measure, simplex.begin()->second});
+            current_optimization.push_back(
+                {simplex.begin()->first, measure, simplex.begin()->second});
             Point worst{std::prev(simplex.end())->second};
             Point center{CalcCenter_(simplex)};
             Point reflected = (1.0 + refle_coef_) * center - refle_coef_ * worst;
@@ -67,13 +69,11 @@ double NelderMeadSolver::Optimize(const OptInfo& info) {
                 LocalShrink_(func, simplex, center);
                 continue;
             }
-            
-            
         }
         simplex = GenerateSimplex_(dim_size, simplex.begin()->second, func);
     }
 
-    log_ptr_->WriteHTML(info, current_optimization, this);
+    log_ptr_->SaveLogs(info, current_optimization, this);
     return simplex.begin()->first;
 }
 
@@ -109,6 +109,8 @@ size_t NelderMeadSolver::CountDim(const std::string& function) {
 
 std::string NelderMeadSolver::GetHyperparams() const {
     std::ostringstream oss;
-    oss << "Reflect: " << refle_coef_ << " Shrink: " << shrnk_coef_ << " Expan: " << expan_coef_ << " Upd simplex: " << update_simplex_;
+    oss << "Reflect: " << refle_coef_ << " Shrink: " << shrnk_coef_ << " Expan: " << expan_coef_
+        << " Upd simplex: " << update_simplex_;
     return oss.str();
 }
+}  // namespace SLV
