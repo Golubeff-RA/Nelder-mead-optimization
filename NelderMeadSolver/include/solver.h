@@ -37,14 +37,16 @@ private:
     Point CalcCenter_(const Simplex& simplex);
 
     // генерирует опорный симплекс
-    Simplex GenerateSimplex_(size_t dim, Point start_point, Function& func);
+    Simplex GenerateSimplex_(size_t dim, Point start_point, FR::Function& func);
+
 
     // преобразует симплекс в вектор точек
     std::vector<Point> SimplexToVector_(const Simplex& simplex);
 
     // оператор локального сжатия
-    void LocalShrink_(Function& func, Simplex& simplex, const Point& center);
+    void LocalShrink_(FR::Function& func, Simplex& simplex, const Point& center);
 
     // оператор глобального сжатия всего симплекса
-    void GlobalShrink_(Function& func, Simplex& simplex);
+    void GlobalShrink_(FR::Function& func, Simplex& simplex);
+
 };

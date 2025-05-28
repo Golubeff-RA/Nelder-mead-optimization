@@ -16,7 +16,7 @@ double NelderMeadSolver::Optimize(const OptInfo& info) {
     double measure = 100;
     LogList current_optimization;
     size_t dim_size = NelderMeadSolver::CountDim(info.function);
-    Function func{info.function};
+    FR::Function func{info.function};
     Simplex simplex{GenerateSimplex_(dim_size, info.start_point, func)};
     for (size_t i = 0; i < std::max((size_t)1ul, info.epoch / update_simplex_); ++i) {
         size_t counter = 0;

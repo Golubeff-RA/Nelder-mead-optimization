@@ -118,9 +118,3 @@ TEST(Math, Determinant) {
     EXPECT_EQ(Determinant(matrix3), -1520);
     EXPECT_EQ(Determinant(matrix4), -243.0);
 }
-
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

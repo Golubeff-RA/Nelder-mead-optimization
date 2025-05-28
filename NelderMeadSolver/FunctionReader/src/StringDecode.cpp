@@ -7,7 +7,7 @@ int main()
     std::vector<double> p = {10, 10, 10};
     Point point(p);
     std::cout << "start";
-    Function func(expression);
+    FR::Function func(expression);
 
     std::cout << func.Calculate(point);
 }

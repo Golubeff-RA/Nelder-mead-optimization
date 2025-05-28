@@ -9,7 +9,8 @@ Point NelderMeadSolver::CalcCenter_(const Simplex& simplex) {
     return center *= 1.0 / (simplex.size() - 1);
 }
 
-Simplex NelderMeadSolver::GenerateSimplex_(size_t dim, Point start_point, Function& func) {
+Simplex NelderMeadSolver::GenerateSimplex_(size_t dim, Point start_point, FR::Function& func) {
+
     Simplex simplex;
     simplex.insert({func.Calculate(start_point), start_point});
 
@@ -32,7 +33,7 @@ std::vector<Point> NelderMeadSolver::SimplexToVector_(const Simplex& simplex) {
     return points;
 }
 
-void NelderMeadSolver::LocalShrink_(Function& func, Simplex& simplex, const Point& center) {
+void NelderMeadSolver::LocalShrink_(FR::Function& func, Simplex& simplex, const Point& center) {
     Point worst{std::prev(simplex.end())->second};
     double f_h = std::prev(simplex.end())->first;
     Point shrinked = shrnk_coef_ * worst + (1 - shrnk_coef_) * center;
@@ -45,7 +46,7 @@ void NelderMeadSolver::LocalShrink_(Function& func, Simplex& simplex, const Poin
     }
 }
 
-void NelderMeadSolver::GlobalShrink_(Function& func, Simplex& simplex) {
+void NelderMeadSolver::GlobalShrink_(FR::Function& func, Simplex& simplex) {
     Point best{simplex.begin()->second};
     std::vector<Point> shrinked;
     shrinked.reserve(simplex.size());

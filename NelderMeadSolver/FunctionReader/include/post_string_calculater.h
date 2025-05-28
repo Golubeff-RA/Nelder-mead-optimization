@@ -1,15 +1,19 @@
 #pragma once
 #include "algebra.h"
 
-class PostStringCalculater {
-private:
-    std::vector<std::string> vecExs_;
-    std::stack<double> stack_;
-    double DecodeNumber(std::string number, Point& point);
+namespace FR {
+    class PostStringCalculater {
+    private:
+        std::vector<std::string> vecExs_;
+        std::stack<double> stack_;
+        double Decode(const std::string& number, const Point& point);
+        double DecodeNumber(const std::string& number);
+        double DecodeVar(const std::string& number, const Point& point);
 
-public:
-    PostStringCalculater(std::vector<std::string> vecExpression) : vecExs_(vecExpression) {
-    }
+    public:
+        PostStringCalculater(std::vector<std::string> vecExpression) : vecExs_(vecExpression) {
+        }
 
-    double Calculate(Point& point);
-};
+        double Calculate(const Point& point);
+    };
+}

@@ -8,12 +8,22 @@ include_directories(
     ${POINT_DIR}/include
 )
 
-add_executable(solver.tests ${SOLVER_TEST_PATH}/solverTesting.cpp ${SOLVER_TEST_PATH}/SimpleTests.cpp ${SOLVER_TEST_PATH}/MiddleTests.cpp ${SOLVER_TEST_PATH}/ExeptionTests.cpp)
-add_executable(points.tests src/pointsTesting.cpp)
-add_executable(functionReader.tests src/functionReaderTesting.cpp)
-add_executable(logger.tests src/loggerTesting.cpp)
+set(SOLVER_TEST_SRC "src/solverTesting.cpp"
+                    "${SOLVER_TEST_PATH}/SimpleTests.cpp"
+                    "${SOLVER_TEST_PATH}/MiddleTests.cpp"
+                    "${SOLVER_TEST_PATH}/ExeptionTests.cpp"
+                    "${SOLVER_TEST_PATH}/DiffTests.cpp")
+set(POINT_TEST_SRC  "src/pointsTesting.cpp"
+                    "src/solverTesting.cpp")
+set(FUNC_TEST_SRC   "src/functionReaderTesting.cpp"
+                    "src/solverTesting.cpp")
+
+add_executable(solver.tests ${SOLVER_TEST_SRC})
+add_executable(points.tests ${POINT_TEST_SRC})
+add_executable(functionReader.tests ${FUNC_TEST_SRC})
+add_executable(all.tests ${SOLVER_TEST_SRC} ${FUNC_TEST_SRC} ${POINT_TEST_SRC})
 target_link_libraries(solver.tests  gtest gmock pthread solver )
 target_link_libraries(points.tests gtest gmock pthread solver)
-target_link_libraries(functionReader.tests gtest gmock pthread solver) #${POINT_LIB})
-target_link_libraries(logger.tests gtest gmock)
+target_link_libraries(functionReader.tests gtest gmock pthread solver)
+target_link_libraries(all.tests  gtest gmock pthread solver )
 
