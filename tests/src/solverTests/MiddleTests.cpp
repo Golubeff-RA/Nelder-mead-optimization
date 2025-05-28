@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "solver.h"
+#include "logger.h"
 
 
 TEST(MiddleOptimizeTest, test1) {
@@ -11,10 +12,11 @@ TEST(MiddleOptimizeTest, test1) {
     double err = 10e-1;
     double ans = -1;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
@@ -27,10 +29,11 @@ TEST(MiddleOptimizeTest, test2) {
     double err = 10e-2;
     double ans = 1;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
