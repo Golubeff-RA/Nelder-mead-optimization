@@ -25,7 +25,11 @@ include_directories(
     ${POINT_DIR}/include
 )
 
-target_link_libraries(${PROJECT_NAME} solver)
+include(CheckIncludeFileCXX)
+check_include_file_cxx("format" CXX_FORMAT_SUPPORT)
+find_package(fmt REQUIRED)
+
+target_link_libraries(${PROJECT_NAME} solver fmt::fmt)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy

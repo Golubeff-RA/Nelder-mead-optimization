@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 project (Nelder-Mead-Optimisation)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(OpenGL_GL_PREFERENCE "GLVND")
 set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/Frontend/imgui)
 set(IMGUI_DIR_BACK ${CMAKE_SOURCE_DIR}/Frontend/imgui/backends)
