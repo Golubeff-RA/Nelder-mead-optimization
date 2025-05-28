@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "solver.h"
+#include "logger.h"
 
 TEST(CountDim, test) {
-    NelderMeadSolver solv(10e-2, 100);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
     EXPECT_EQ(solv.CountDim("x1 + x2 + x3 + x4"), 4);
 }
 
@@ -15,10 +17,11 @@ TEST(OptimizeTest, test1) {
     double err = 10e-2;
     double ans = 0;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
@@ -31,10 +34,11 @@ TEST(OptimizeTest, test2) {
     double err = 10e-2;
     double ans = -1;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
@@ -47,10 +51,11 @@ TEST(OptimizeTest, test3) {
     double err = 10e-2;
     double ans = 0;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
@@ -63,10 +68,11 @@ TEST(OptimizeTest, test4) {
     double err = 10e-2;
     double ans = 0;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }
@@ -79,10 +85,11 @@ TEST(OptimizeTest, test5) {
     double err = 10e-2;
     double ans = -1;
 
-    NelderMeadSolver solv(0, 100);
-    double res = solv.Optimize(expr, p);
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    double res = solv.Optimize({expr, 100, 0, p});
     for (int i = 1; i< cnt_launch; i++) {
-        res = std::min(res, solv.Optimize(expr, p));
+        res = std::min(res, solv.Optimize({expr, 100, 0, p}));
     }
     EXPECT_TRUE(abs(res - ans) < err);
 }

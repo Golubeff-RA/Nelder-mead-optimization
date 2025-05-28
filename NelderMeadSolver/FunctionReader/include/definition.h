@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <cstdint> 
 
 namespace FR {
     enum class OPERAND{

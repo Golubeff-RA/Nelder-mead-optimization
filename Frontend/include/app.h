@@ -8,10 +8,9 @@
 
 class AppUI {
 private:
-    // точка для старта метода
+    LoggerPtr logger = Logger::GetLogger();
     Point start_point_ = Point(0);
-    // оптимизатор
-    NelderMeadSolver solver_;
+    NelderMeadSolver solver_ = NelderMeadSolver(logger);
 
     char readed_function_[128] = "";
     char input_function_[128] = "";

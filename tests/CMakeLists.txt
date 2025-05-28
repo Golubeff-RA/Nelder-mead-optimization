@@ -21,9 +21,8 @@ set(FUNC_TEST_SRC   "src/functionReaderTesting.cpp"
 add_executable(solver.tests ${SOLVER_TEST_SRC})
 add_executable(points.tests ${POINT_TEST_SRC})
 add_executable(functionReader.tests ${FUNC_TEST_SRC})
-add_executable(all.tests ${SOLVER_TEST_SRC} ${FUNC_TEST_SRC})
+add_executable(all.tests ${SOLVER_TEST_SRC} ${FUNC_TEST_SRC} ${POINT_TEST_SRC})
 target_link_libraries(solver.tests  gtest gmock pthread solver )
 target_link_libraries(points.tests gtest gmock pthread solver)
 target_link_libraries(functionReader.tests gtest gmock pthread solver)
 target_link_libraries(all.tests  gtest gmock pthread solver )
-
