@@ -94,3 +94,21 @@ TEST(DiffTest, HimellblayTest) {
     }
     
 }
+
+TEST(DiffTest, RastriginTest) {
+    srand(time(0));
+    std::string expr = "20 + (x1^2 - 10 * cos(2*pi*x1)) + (x2 ^ 2 - 10 * cos(2 * pi * x2))";
+    LoggerPtr logger = Logger::GetLogger();
+    NelderMeadSolver solv(logger);
+    
+    double ans = 0.0;
+    double err = 10e-1;
+    
+    for(int i = 0; i < 30; i++) {
+    std::vector<double> p = {(double)(rand() % 2000 -1000) / 100, (double)(rand() % 2000 -1000) / 100};
+    Point point(p);
+    double res = solv.Optimize({expr, 100, 0, p});
+    EXPECT_TRUE(abs(res - ans) < err);
+    }
+    
+}
