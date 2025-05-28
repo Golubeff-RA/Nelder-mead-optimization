@@ -11,7 +11,8 @@ include_directories(
 set(SOLVER_TEST_SRC "src/solverTesting.cpp"
                     "${SOLVER_TEST_PATH}/SimpleTests.cpp"
                     "${SOLVER_TEST_PATH}/MiddleTests.cpp"
-                    "${SOLVER_TEST_PATH}/ExeptionTests.cpp")
+                    "${SOLVER_TEST_PATH}/ExeptionTests.cpp"
+                    "${SOLVER_TEST_PATH}/DiffTests.cpp")
 set(POINT_TEST_SRC  "src/pointsTesting.cpp"
                     "src/solverTesting.cpp")
 set(FUNC_TEST_SRC   "src/functionReaderTesting.cpp"
